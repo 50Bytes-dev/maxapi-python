@@ -1,5 +1,5 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
@@ -13,30 +13,32 @@ T = TypeVar("T", bound="UserInfoBody")
 class UserInfoBody:
     """
     Attributes:
-        user_id (Union[Unset, int]):  Example: 123456789.
+        user_ids (Union[Unset, list[int]]):
     """
 
-    user_id: Union[Unset, int] = UNSET
+    user_ids: Union[Unset, list[int]] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        user_id = self.user_id
+        user_ids: Union[Unset, list[int]] = UNSET
+        if not isinstance(self.user_ids, Unset):
+            user_ids = self.user_ids
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if user_id is not UNSET:
-            field_dict["userId"] = user_id
+        if user_ids is not UNSET:
+            field_dict["userIds"] = user_ids
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        user_id = d.pop("userId", UNSET)
+        user_ids = cast(list[int], d.pop("userIds", UNSET))
 
         user_info_body = cls(
-            user_id=user_id,
+            user_ids=user_ids,
         )
 
         user_info_body.additional_properties = d

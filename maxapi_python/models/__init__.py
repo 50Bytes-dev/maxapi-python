@@ -13,7 +13,6 @@ from .auth_register_body import AuthRegisterBody
 from .auth_register_response import AuthRegisterResponse
 from .auth_request_body import AuthRequestBody
 from .auth_request_response import AuthRequestResponse
-from .avatar_response import AvatarResponse
 from .chat_counts import ChatCounts
 from .chat_history_body import ChatHistoryBody
 from .chat_history_response import ChatHistoryResponse
@@ -42,9 +41,6 @@ from .group_name_body import GroupNameBody
 from .group_topic_body import GroupTopicBody
 from .image_body import ImageBody
 from .invite_link_response import InviteLinkResponse
-from .list_groups_response import ListGroupsResponse
-from .list_groups_response_channels_item import ListGroupsResponseChannelsItem
-from .list_groups_response_groups_item import ListGroupsResponseGroupsItem
 from .list_users_response import ListUsersResponse
 from .mark_read_body import MarkReadBody
 from .message_body import MessageBody
@@ -77,7 +73,6 @@ __all__ = (
     "AuthRegisterResponse",
     "AuthRequestBody",
     "AuthRequestResponse",
-    "AvatarResponse",
     "ChatCounts",
     "ChatHistoryBody",
     "ChatHistoryResponse",
@@ -106,9 +101,6 @@ __all__ = (
     "GroupTopicBody",
     "ImageBody",
     "InviteLinkResponse",
-    "ListGroupsResponse",
-    "ListGroupsResponseChannelsItem",
-    "ListGroupsResponseGroupsItem",
     "ListUsersResponse",
     "MarkReadBody",
     "MessageBody",

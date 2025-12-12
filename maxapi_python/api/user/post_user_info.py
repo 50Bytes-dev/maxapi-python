@@ -77,7 +77,8 @@ def sync_detailed(
 ) -> Response[Union[ErrorResponse, UserInfoResponse]]:
     """Get user info
 
-     Gets user information by MAX user ID
+     Gets user information by MAX user ID. Supports single userId or batch request with userIds array
+    (max 100)
 
     Args:
         body (UserInfoBody):
@@ -108,7 +109,8 @@ def sync(
 ) -> Optional[Union[ErrorResponse, UserInfoResponse]]:
     """Get user info
 
-     Gets user information by MAX user ID
+     Gets user information by MAX user ID. Supports single userId or batch request with userIds array
+    (max 100)
 
     Args:
         body (UserInfoBody):
@@ -134,7 +136,8 @@ async def asyncio_detailed(
 ) -> Response[Union[ErrorResponse, UserInfoResponse]]:
     """Get user info
 
-     Gets user information by MAX user ID
+     Gets user information by MAX user ID. Supports single userId or batch request with userIds array
+    (max 100)
 
     Args:
         body (UserInfoBody):
@@ -163,7 +166,8 @@ async def asyncio(
 ) -> Optional[Union[ErrorResponse, UserInfoResponse]]:
     """Get user info
 
-     Gets user information by MAX user ID
+     Gets user information by MAX user ID. Supports single userId or batch request with userIds array
+    (max 100)
 
     Args:
         body (UserInfoBody):
