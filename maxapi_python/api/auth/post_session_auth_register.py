@@ -6,7 +6,8 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.auth_register_body import AuthRegisterBody
-from ...models.data import Data
+from ...models.auth_register_response import AuthRegisterResponse
+from ...models.error_response import ErrorResponse
 from ...types import Response
 
 
@@ -29,14 +30,16 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Data]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[AuthRegisterResponse, ErrorResponse]]:
     if response.status_code == 200:
-        response_200 = Data.from_dict(response.json())
+        response_200 = AuthRegisterResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 400:
-        response_400 = Data.from_dict(response.json())
+        response_400 = ErrorResponse.from_dict(response.json())
 
         return response_400
 
@@ -46,7 +49,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Data]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[AuthRegisterResponse, ErrorResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -59,7 +64,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: AuthRegisterBody,
-) -> Response[Data]:
+) -> Response[Union[AuthRegisterResponse, ErrorResponse]]:
     """Register new user
 
      Registers a new user with first and last name
@@ -72,7 +77,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[Union[AuthRegisterResponse, ErrorResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -90,7 +95,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: AuthRegisterBody,
-) -> Optional[Data]:
+) -> Optional[Union[AuthRegisterResponse, ErrorResponse]]:
     """Register new user
 
      Registers a new user with first and last name
@@ -103,7 +108,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        Union[AuthRegisterResponse, ErrorResponse]
     """
 
     return sync_detailed(
@@ -116,7 +121,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: AuthRegisterBody,
-) -> Response[Data]:
+) -> Response[Union[AuthRegisterResponse, ErrorResponse]]:
     """Register new user
 
      Registers a new user with first and last name
@@ -129,7 +134,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[Union[AuthRegisterResponse, ErrorResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -145,7 +150,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: AuthRegisterBody,
-) -> Optional[Data]:
+) -> Optional[Union[AuthRegisterResponse, ErrorResponse]]:
     """Register new user
 
      Registers a new user with first and last name
@@ -158,7 +163,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        Union[AuthRegisterResponse, ErrorResponse]
     """
 
     return (

@@ -5,8 +5,9 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.data import Data
+from ...models.error_response import ErrorResponse
 from ...models.group_info_body import GroupInfoBody
+from ...models.invite_link_response import InviteLinkResponse
 from ...types import Response
 
 
@@ -29,24 +30,26 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Data]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResponse, InviteLinkResponse]]:
     if response.status_code == 200:
-        response_200 = Data.from_dict(response.json())
+        response_200 = InviteLinkResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 400:
-        response_400 = Data.from_dict(response.json())
+        response_400 = ErrorResponse.from_dict(response.json())
 
         return response_400
 
     if response.status_code == 404:
-        response_404 = Data.from_dict(response.json())
+        response_404 = ErrorResponse.from_dict(response.json())
 
         return response_404
 
     if response.status_code == 503:
-        response_503 = Data.from_dict(response.json())
+        response_503 = ErrorResponse.from_dict(response.json())
 
         return response_503
 
@@ -56,7 +59,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Data]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResponse, InviteLinkResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -69,7 +74,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: GroupInfoBody,
-) -> Response[Data]:
+) -> Response[Union[ErrorResponse, InviteLinkResponse]]:
     """Get group invite link
 
      Gets invite link for a group
@@ -82,7 +87,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[Union[ErrorResponse, InviteLinkResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -100,7 +105,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: GroupInfoBody,
-) -> Optional[Data]:
+) -> Optional[Union[ErrorResponse, InviteLinkResponse]]:
     """Get group invite link
 
      Gets invite link for a group
@@ -113,7 +118,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        Union[ErrorResponse, InviteLinkResponse]
     """
 
     return sync_detailed(
@@ -126,7 +131,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: GroupInfoBody,
-) -> Response[Data]:
+) -> Response[Union[ErrorResponse, InviteLinkResponse]]:
     """Get group invite link
 
      Gets invite link for a group
@@ -139,7 +144,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[Union[ErrorResponse, InviteLinkResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -155,7 +160,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: GroupInfoBody,
-) -> Optional[Data]:
+) -> Optional[Union[ErrorResponse, InviteLinkResponse]]:
     """Get group invite link
 
      Gets invite link for a group
@@ -168,7 +173,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        Union[ErrorResponse, InviteLinkResponse]
     """
 
     return (

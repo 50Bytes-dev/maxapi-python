@@ -5,8 +5,9 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.data import Data
+from ...models.error_response import ErrorResponse
 from ...models.webhook_body import WebhookBody
+from ...models.webhook_response import WebhookResponse
 from ...types import Response
 
 
@@ -29,14 +30,16 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Data]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResponse, WebhookResponse]]:
     if response.status_code == 200:
-        response_200 = Data.from_dict(response.json())
+        response_200 = WebhookResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 400:
-        response_400 = Data.from_dict(response.json())
+        response_400 = ErrorResponse.from_dict(response.json())
 
         return response_400
 
@@ -46,7 +49,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Data]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResponse, WebhookResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -59,7 +64,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: WebhookBody,
-) -> Response[Data]:
+) -> Response[Union[ErrorResponse, WebhookResponse]]:
     """Update webhook
 
      Updates webhook URL
@@ -72,7 +77,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[Union[ErrorResponse, WebhookResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -90,7 +95,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: WebhookBody,
-) -> Optional[Data]:
+) -> Optional[Union[ErrorResponse, WebhookResponse]]:
     """Update webhook
 
      Updates webhook URL
@@ -103,7 +108,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        Union[ErrorResponse, WebhookResponse]
     """
 
     return sync_detailed(
@@ -116,7 +121,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: WebhookBody,
-) -> Response[Data]:
+) -> Response[Union[ErrorResponse, WebhookResponse]]:
     """Update webhook
 
      Updates webhook URL
@@ -129,7 +134,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[Union[ErrorResponse, WebhookResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -145,7 +150,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: WebhookBody,
-) -> Optional[Data]:
+) -> Optional[Union[ErrorResponse, WebhookResponse]]:
     """Update webhook
 
      Updates webhook URL
@@ -158,7 +163,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        Union[ErrorResponse, WebhookResponse]
     """
 
     return (

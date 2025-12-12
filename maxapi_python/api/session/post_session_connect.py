@@ -6,7 +6,8 @@ import httpx
 from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.connect_body import ConnectBody
-from ...models.data import Data
+from ...models.error_response import ErrorResponse
+from ...models.message_response import MessageResponse
 from ...types import Response
 
 
@@ -29,24 +30,26 @@ def _get_kwargs(
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Data]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResponse, MessageResponse]]:
     if response.status_code == 200:
-        response_200 = Data.from_dict(response.json())
+        response_200 = MessageResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 400:
-        response_400 = Data.from_dict(response.json())
+        response_400 = ErrorResponse.from_dict(response.json())
 
         return response_400
 
     if response.status_code == 409:
-        response_409 = Data.from_dict(response.json())
+        response_409 = ErrorResponse.from_dict(response.json())
 
         return response_409
 
     if response.status_code == 500:
-        response_500 = Data.from_dict(response.json())
+        response_500 = ErrorResponse.from_dict(response.json())
 
         return response_500
 
@@ -56,7 +59,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Data]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResponse, MessageResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -69,7 +74,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: ConnectBody,
-) -> Response[Data]:
+) -> Response[Union[ErrorResponse, MessageResponse]]:
     """Connect to MAX servers
 
      Initiates connection to MAX servers using saved auth token
@@ -82,7 +87,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[Union[ErrorResponse, MessageResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -100,7 +105,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: ConnectBody,
-) -> Optional[Data]:
+) -> Optional[Union[ErrorResponse, MessageResponse]]:
     """Connect to MAX servers
 
      Initiates connection to MAX servers using saved auth token
@@ -113,7 +118,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        Union[ErrorResponse, MessageResponse]
     """
 
     return sync_detailed(
@@ -126,7 +131,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: ConnectBody,
-) -> Response[Data]:
+) -> Response[Union[ErrorResponse, MessageResponse]]:
     """Connect to MAX servers
 
      Initiates connection to MAX servers using saved auth token
@@ -139,7 +144,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[Union[ErrorResponse, MessageResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -155,7 +160,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: ConnectBody,
-) -> Optional[Data]:
+) -> Optional[Union[ErrorResponse, MessageResponse]]:
     """Connect to MAX servers
 
      Initiates connection to MAX servers using saved auth token
@@ -168,7 +173,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        Union[ErrorResponse, MessageResponse]
     """
 
     return (

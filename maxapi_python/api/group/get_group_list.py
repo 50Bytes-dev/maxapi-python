@@ -5,7 +5,8 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.data import Data
+from ...models.error_response import ErrorResponse
+from ...models.list_groups_response import ListGroupsResponse
 from ...types import Response
 
 
@@ -18,14 +19,16 @@ def _get_kwargs() -> dict[str, Any]:
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Data]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[Union[ErrorResponse, ListGroupsResponse]]:
     if response.status_code == 200:
-        response_200 = Data.from_dict(response.json())
+        response_200 = ListGroupsResponse.from_dict(response.json())
 
         return response_200
 
     if response.status_code == 503:
-        response_503 = Data.from_dict(response.json())
+        response_503 = ErrorResponse.from_dict(response.json())
 
         return response_503
 
@@ -35,7 +38,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Data]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[Union[ErrorResponse, ListGroupsResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -47,7 +52,7 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Data]:
+) -> Response[Union[ErrorResponse, ListGroupsResponse]]:
     """List groups
 
      Lists all groups and channels
@@ -57,7 +62,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[Union[ErrorResponse, ListGroupsResponse]]
     """
 
     kwargs = _get_kwargs()
@@ -72,7 +77,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Data]:
+) -> Optional[Union[ErrorResponse, ListGroupsResponse]]:
     """List groups
 
      Lists all groups and channels
@@ -82,7 +87,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        Union[ErrorResponse, ListGroupsResponse]
     """
 
     return sync_detailed(
@@ -93,7 +98,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Data]:
+) -> Response[Union[ErrorResponse, ListGroupsResponse]]:
     """List groups
 
      Lists all groups and channels
@@ -103,7 +108,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[Union[ErrorResponse, ListGroupsResponse]]
     """
 
     kwargs = _get_kwargs()
@@ -116,7 +121,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Data]:
+) -> Optional[Union[ErrorResponse, ListGroupsResponse]]:
     """List groups
 
      Lists all groups and channels
@@ -126,7 +131,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        Union[ErrorResponse, ListGroupsResponse]
     """
 
     return (

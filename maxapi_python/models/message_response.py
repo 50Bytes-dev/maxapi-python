@@ -1,62 +1,56 @@
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, Union
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-if TYPE_CHECKING:
-    from ..models.user_response import UserResponse
-
-
-T = TypeVar("T", bound="Data")
+T = TypeVar("T", bound="MessageResponse")
 
 
 @_attrs_define
-class Data:
-    """
+class MessageResponse:
+    """Simple success response with message
+
     Attributes:
-        data (Union[Unset, list['UserResponse']]):
+        message (Union[Unset, str]):  Example: Operation completed.
+        success (Union[Unset, bool]):  Example: True.
     """
 
-    data: Union[Unset, list["UserResponse"]] = UNSET
+    message: Union[Unset, str] = UNSET
+    success: Union[Unset, bool] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        data: Union[Unset, list[dict[str, Any]]] = UNSET
-        if not isinstance(self.data, Unset):
-            data = []
-            for data_item_data in self.data:
-                data_item = data_item_data.to_dict()
-                data.append(data_item)
+        message = self.message
+
+        success = self.success
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if data is not UNSET:
-            field_dict["data"] = data
+        if message is not UNSET:
+            field_dict["message"] = message
+        if success is not UNSET:
+            field_dict["success"] = success
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.user_response import UserResponse
-
         d = dict(src_dict)
-        data = []
-        _data = d.pop("data", UNSET)
-        for data_item_data in _data or []:
-            data_item = UserResponse.from_dict(data_item_data)
+        message = d.pop("message", UNSET)
 
-            data.append(data_item)
+        success = d.pop("success", UNSET)
 
-        data = cls(
-            data=data,
+        message_response = cls(
+            message=message,
+            success=success,
         )
 
-        data.additional_properties = d
-        return data
+        message_response.additional_properties = d
+        return message_response
 
     @property
     def additional_keys(self) -> list[str]:

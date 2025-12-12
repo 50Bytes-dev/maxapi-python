@@ -5,7 +5,7 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.data import Data
+from ...models.message_response import MessageResponse
 from ...types import Response
 
 
@@ -18,9 +18,11 @@ def _get_kwargs() -> dict[str, Any]:
     return _kwargs
 
 
-def _parse_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Optional[Data]:
+def _parse_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Optional[MessageResponse]:
     if response.status_code == 200:
-        response_200 = Data.from_dict(response.json())
+        response_200 = MessageResponse.from_dict(response.json())
 
         return response_200
 
@@ -30,7 +32,9 @@ def _parse_response(*, client: Union[AuthenticatedClient, Client], response: htt
         return None
 
 
-def _build_response(*, client: Union[AuthenticatedClient, Client], response: httpx.Response) -> Response[Data]:
+def _build_response(
+    *, client: Union[AuthenticatedClient, Client], response: httpx.Response
+) -> Response[MessageResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -42,7 +46,7 @@ def _build_response(*, client: Union[AuthenticatedClient, Client], response: htt
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Data]:
+) -> Response[MessageResponse]:
     """Delete webhook
 
      Removes the webhook URL
@@ -52,7 +56,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[MessageResponse]
     """
 
     kwargs = _get_kwargs()
@@ -67,7 +71,7 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-) -> Optional[Data]:
+) -> Optional[MessageResponse]:
     """Delete webhook
 
      Removes the webhook URL
@@ -77,7 +81,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        MessageResponse
     """
 
     return sync_detailed(
@@ -88,7 +92,7 @@ def sync(
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-) -> Response[Data]:
+) -> Response[MessageResponse]:
     """Delete webhook
 
      Removes the webhook URL
@@ -98,7 +102,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Data]
+        Response[MessageResponse]
     """
 
     kwargs = _get_kwargs()
@@ -111,7 +115,7 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-) -> Optional[Data]:
+) -> Optional[MessageResponse]:
     """Delete webhook
 
      Removes the webhook URL
@@ -121,7 +125,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Data
+        MessageResponse
     """
 
     return (
