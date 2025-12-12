@@ -2,6 +2,10 @@
 
 from .add_user_body import AddUserBody
 from .add_user_response import AddUserResponse
+from .all_chats_response import AllChatsResponse
+from .all_chats_response_channels_item import AllChatsResponseChannelsItem
+from .all_chats_response_dialogs_item import AllChatsResponseDialogsItem
+from .all_chats_response_groups_item import AllChatsResponseGroupsItem
 from .audio_body import AudioBody
 from .auth_confirm_body import AuthConfirmBody
 from .auth_confirm_response import AuthConfirmResponse
@@ -10,6 +14,7 @@ from .auth_register_response import AuthRegisterResponse
 from .auth_request_body import AuthRequestBody
 from .auth_request_response import AuthRequestResponse
 from .avatar_response import AvatarResponse
+from .chat_counts import ChatCounts
 from .chat_history_body import ChatHistoryBody
 from .chat_history_response import ChatHistoryResponse
 from .chat_history_response_messages_item import ChatHistoryResponseMessagesItem
@@ -17,6 +22,8 @@ from .check_user_body import CheckUserBody
 from .check_user_response import CheckUserResponse
 from .check_user_result_item import CheckUserResultItem
 from .connect_body import ConnectBody
+from .contacts_response import ContactsResponse
+from .contacts_response_contacts_item import ContactsResponseContactsItem
 from .create_group_body import CreateGroupBody
 from .delete_message_body import DeleteMessageBody
 from .document_body import DocumentBody
@@ -59,6 +66,10 @@ from .webhook_response import WebhookResponse
 __all__ = (
     "AddUserBody",
     "AddUserResponse",
+    "AllChatsResponse",
+    "AllChatsResponseChannelsItem",
+    "AllChatsResponseDialogsItem",
+    "AllChatsResponseGroupsItem",
     "AudioBody",
     "AuthConfirmBody",
     "AuthConfirmResponse",
@@ -67,6 +78,7 @@ __all__ = (
     "AuthRequestBody",
     "AuthRequestResponse",
     "AvatarResponse",
+    "ChatCounts",
     "ChatHistoryBody",
     "ChatHistoryResponse",
     "ChatHistoryResponseMessagesItem",
@@ -74,6 +86,8 @@ __all__ = (
     "CheckUserResponse",
     "CheckUserResultItem",
     "ConnectBody",
+    "ContactsResponse",
+    "ContactsResponseContactsItem",
     "CreateGroupBody",
     "DeleteMessageBody",
     "DocumentBody",
