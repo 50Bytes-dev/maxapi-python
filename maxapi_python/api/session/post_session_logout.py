@@ -49,7 +49,7 @@ def sync_detailed(
 ) -> Response[MessageResponse]:
     """Logout from MAX
 
-     Logs out from MAX and clears auth token
+     Logs out from MAX and deletes the user from the system
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -74,7 +74,7 @@ def sync(
 ) -> Optional[MessageResponse]:
     """Logout from MAX
 
-     Logs out from MAX and clears auth token
+     Logs out from MAX and deletes the user from the system
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -95,7 +95,7 @@ async def asyncio_detailed(
 ) -> Response[MessageResponse]:
     """Logout from MAX
 
-     Logs out from MAX and clears auth token
+     Logs out from MAX and deletes the user from the system
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -118,7 +118,7 @@ async def asyncio(
 ) -> Optional[MessageResponse]:
     """Logout from MAX
 
-     Logs out from MAX and clears auth token
+     Logs out from MAX and deletes the user from the system
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
