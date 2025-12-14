@@ -7,7 +7,7 @@ from attrs import field as _attrs_field
 from ..types import UNSET, Unset
 
 if TYPE_CHECKING:
-    from ..models.user_info_response_user import UserInfoResponseUser
+    from ..models.user_info_response_users_item import UserInfoResponseUsersItem
 
 
 T = TypeVar("T", bound="UserInfoResponse")
@@ -15,51 +15,63 @@ T = TypeVar("T", bound="UserInfoResponse")
 
 @_attrs_define
 class UserInfoResponse:
-    """Response with user information
+    """Response with user information (always returns array)
 
     Attributes:
+        count (Union[Unset, int]):  Example: 1.
         success (Union[Unset, bool]):  Example: True.
-        user (Union[Unset, UserInfoResponseUser]):
+        users (Union[Unset, list['UserInfoResponseUsersItem']]):
     """
 
+    count: Union[Unset, int] = UNSET
     success: Union[Unset, bool] = UNSET
-    user: Union[Unset, "UserInfoResponseUser"] = UNSET
+    users: Union[Unset, list["UserInfoResponseUsersItem"]] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        count = self.count
+
         success = self.success
 
-        user: Union[Unset, dict[str, Any]] = UNSET
-        if not isinstance(self.user, Unset):
-            user = self.user.to_dict()
+        users: Union[Unset, list[dict[str, Any]]] = UNSET
+        if not isinstance(self.users, Unset):
+            users = []
+            for users_item_data in self.users:
+                users_item = users_item_data.to_dict()
+                users.append(users_item)
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if count is not UNSET:
+            field_dict["count"] = count
         if success is not UNSET:
             field_dict["success"] = success
-        if user is not UNSET:
-            field_dict["user"] = user
+        if users is not UNSET:
+            field_dict["users"] = users
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.user_info_response_user import UserInfoResponseUser
+        from ..models.user_info_response_users_item import UserInfoResponseUsersItem
 
         d = dict(src_dict)
+        count = d.pop("count", UNSET)
+
         success = d.pop("success", UNSET)
 
-        _user = d.pop("user", UNSET)
-        user: Union[Unset, UserInfoResponseUser]
-        if isinstance(_user, Unset):
-            user = UNSET
-        else:
-            user = UserInfoResponseUser.from_dict(_user)
+        users = []
+        _users = d.pop("users", UNSET)
+        for users_item_data in _users or []:
+            users_item = UserInfoResponseUsersItem.from_dict(users_item_data)
+
+            users.append(users_item)
 
         user_info_response = cls(
+            count=count,
             success=success,
-            user=user,
+            users=users,
         )
 
         user_info_response.additional_properties = d

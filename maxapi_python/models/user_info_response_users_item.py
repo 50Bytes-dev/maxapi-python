@@ -4,11 +4,11 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-T = TypeVar("T", bound="UserInfoResponseUser")
+T = TypeVar("T", bound="UserInfoResponseUsersItem")
 
 
 @_attrs_define
-class UserInfoResponseUser:
+class UserInfoResponseUsersItem:
     """ """
 
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -22,10 +22,10 @@ class UserInfoResponseUser:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        user_info_response_user = cls()
+        user_info_response_users_item = cls()
 
-        user_info_response_user.additional_properties = d
-        return user_info_response_user
+        user_info_response_users_item.additional_properties = d
+        return user_info_response_users_item
 
     @property
     def additional_keys(self) -> list[str]:

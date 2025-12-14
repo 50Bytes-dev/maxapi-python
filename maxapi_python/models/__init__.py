@@ -49,7 +49,7 @@ from .update_participants_body import UpdateParticipantsBody
 from .update_participants_body_operation import UpdateParticipantsBodyOperation
 from .user_info_body import UserInfoBody
 from .user_info_response import UserInfoResponse
-from .user_info_response_user import UserInfoResponseUser
+from .user_info_response_users_item import UserInfoResponseUsersItem
 from .user_response import UserResponse
 from .video_body import VideoBody
 from .webhook_body import WebhookBody
@@ -105,7 +105,7 @@ __all__ = (
     "UpdateParticipantsBodyOperation",
     "UserInfoBody",
     "UserInfoResponse",
-    "UserInfoResponseUser",
+    "UserInfoResponseUsersItem",
     "UserResponse",
     "VideoBody",
     "WebhookBody",
