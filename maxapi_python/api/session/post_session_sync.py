@@ -5,36 +5,25 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.download_body import DownloadBody
-from ...models.download_media_response import DownloadMediaResponse
 from ...models.error_response import ErrorResponse
+from ...models.post_session_sync_response_200 import PostSessionSyncResponse200
 from ...types import Response
 
 
-def _get_kwargs(
-    *,
-    body: DownloadBody,
-) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
-
+def _get_kwargs() -> dict[str, Any]:
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": "/chat/downloadaudio",
+        "url": "/session/sync",
     }
 
-    _kwargs["json"] = body.to_dict()
-
-    headers["Content-Type"] = "application/json"
-
-    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[DownloadMediaResponse, ErrorResponse]]:
+) -> Optional[Union[ErrorResponse, PostSessionSyncResponse200]]:
     if response.status_code == 200:
-        response_200 = DownloadMediaResponse.from_dict(response.json())
+        response_200 = PostSessionSyncResponse200.from_dict(response.json())
 
         return response_200
 
@@ -43,10 +32,10 @@ def _parse_response(
 
         return response_400
 
-    if response.status_code == 503:
-        response_503 = ErrorResponse.from_dict(response.json())
+    if response.status_code == 500:
+        response_500 = ErrorResponse.from_dict(response.json())
 
-        return response_503
+        return response_500
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -56,7 +45,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[DownloadMediaResponse, ErrorResponse]]:
+) -> Response[Union[ErrorResponse, PostSessionSyncResponse200]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -68,26 +57,21 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: DownloadBody,
-) -> Response[Union[DownloadMediaResponse, ErrorResponse]]:
-    """Download audio
+) -> Response[Union[ErrorResponse, PostSessionSyncResponse200]]:
+    """Request sync
 
-     Downloads audio by file ID
-
-    Args:
-        body (DownloadBody):
+     Reconnects to MAX server and returns fresh profile, chats, contacts data. Also sends Sync event to
+    webhook
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[DownloadMediaResponse, ErrorResponse]]
+        Response[Union[ErrorResponse, PostSessionSyncResponse200]]
     """
 
-    kwargs = _get_kwargs(
-        body=body,
-    )
+    kwargs = _get_kwargs()
 
     response = client.get_httpx_client().request(
         **kwargs,
@@ -99,52 +83,43 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: DownloadBody,
-) -> Optional[Union[DownloadMediaResponse, ErrorResponse]]:
-    """Download audio
+) -> Optional[Union[ErrorResponse, PostSessionSyncResponse200]]:
+    """Request sync
 
-     Downloads audio by file ID
-
-    Args:
-        body (DownloadBody):
+     Reconnects to MAX server and returns fresh profile, chats, contacts data. Also sends Sync event to
+    webhook
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[DownloadMediaResponse, ErrorResponse]
+        Union[ErrorResponse, PostSessionSyncResponse200]
     """
 
     return sync_detailed(
         client=client,
-        body=body,
     ).parsed
 
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: DownloadBody,
-) -> Response[Union[DownloadMediaResponse, ErrorResponse]]:
-    """Download audio
+) -> Response[Union[ErrorResponse, PostSessionSyncResponse200]]:
+    """Request sync
 
-     Downloads audio by file ID
-
-    Args:
-        body (DownloadBody):
+     Reconnects to MAX server and returns fresh profile, chats, contacts data. Also sends Sync event to
+    webhook
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[DownloadMediaResponse, ErrorResponse]]
+        Response[Union[ErrorResponse, PostSessionSyncResponse200]]
     """
 
-    kwargs = _get_kwargs(
-        body=body,
-    )
+    kwargs = _get_kwargs()
 
     response = await client.get_async_httpx_client().request(**kwargs)
 
@@ -154,26 +129,22 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: DownloadBody,
-) -> Optional[Union[DownloadMediaResponse, ErrorResponse]]:
-    """Download audio
+) -> Optional[Union[ErrorResponse, PostSessionSyncResponse200]]:
+    """Request sync
 
-     Downloads audio by file ID
-
-    Args:
-        body (DownloadBody):
+     Reconnects to MAX server and returns fresh profile, chats, contacts data. Also sends Sync event to
+    webhook
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[DownloadMediaResponse, ErrorResponse]
+        Union[ErrorResponse, PostSessionSyncResponse200]
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            body=body,
         )
     ).parsed

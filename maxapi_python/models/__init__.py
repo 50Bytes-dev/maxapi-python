@@ -40,6 +40,7 @@ from .list_users_response import ListUsersResponse
 from .mark_read_body import MarkReadBody
 from .message_body import MessageBody
 from .message_response import MessageResponse
+from .post_session_sync_response_200 import PostSessionSyncResponse200
 from .presence_body import PresenceBody
 from .react_body import ReactBody
 from .send_message_response import SendMessageResponse
@@ -95,6 +96,7 @@ __all__ = (
     "MarkReadBody",
     "MessageBody",
     "MessageResponse",
+    "PostSessionSyncResponse200",
     "PresenceBody",
     "ReactBody",
     "SendMessageResponse",
