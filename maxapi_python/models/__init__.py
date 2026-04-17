@@ -3,9 +3,6 @@
 from .add_user_body import AddUserBody
 from .add_user_response import AddUserResponse
 from .audio_body import AudioBody
-from .auth_qr_start_response import AuthQRStartResponse
-from .auth_qr_status_response import AuthQRStatusResponse
-from .auth_qr_status_response_status import AuthQRStatusResponseStatus
 from .chat_history_body import ChatHistoryBody
 from .chat_history_response import ChatHistoryResponse
 from .chat_history_response_messages_item import ChatHistoryResponseMessagesItem
@@ -37,9 +34,9 @@ from .list_users_response import ListUsersResponse
 from .mark_read_body import MarkReadBody
 from .message_body import MessageBody
 from .message_response import MessageResponse
-from .post_session_auth_qr_start_body import PostSessionAuthQrStartBody
 from .post_session_sync_response_200 import PostSessionSyncResponse200
 from .presence_body import PresenceBody
+from .qr_code_response import QRCodeResponse
 from .react_body import ReactBody
 from .send_message_response import SendMessageResponse
 from .status_response import StatusResponse
@@ -57,9 +54,6 @@ __all__ = (
     "AddUserBody",
     "AddUserResponse",
     "AudioBody",
-    "AuthQRStartResponse",
-    "AuthQRStatusResponse",
-    "AuthQRStatusResponseStatus",
     "ChatHistoryBody",
     "ChatHistoryResponse",
     "ChatHistoryResponseMessagesItem",
@@ -91,9 +85,9 @@ __all__ = (
     "MarkReadBody",
     "MessageBody",
     "MessageResponse",
-    "PostSessionAuthQrStartBody",
     "PostSessionSyncResponse200",
     "PresenceBody",
+    "QRCodeResponse",
     "ReactBody",
     "SendMessageResponse",
     "StatusResponse",

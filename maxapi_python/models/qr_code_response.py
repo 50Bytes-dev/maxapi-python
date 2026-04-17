@@ -4,43 +4,34 @@ from typing import Any, TypeVar, Union
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..models.auth_qr_status_response_status import AuthQRStatusResponseStatus
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="AuthQRStatusResponse")
+T = TypeVar("T", bound="QRCodeResponse")
 
 
 @_attrs_define
-class AuthQRStatusResponse:
-    """QR auth session status
+class QRCodeResponse:
+    """Current QR code for an in-progress auth session.
 
     Attributes:
-        auth_token (Union[Unset, str]):  Example: auth_token_value.
-        status (Union[Unset, AuthQRStatusResponseStatus]):  Example: pending.
+        qrcode (Union[Unset, str]):  Example: data:image/png;base64,....
         success (Union[Unset, bool]):  Example: True.
     """
 
-    auth_token: Union[Unset, str] = UNSET
-    status: Union[Unset, AuthQRStatusResponseStatus] = UNSET
+    qrcode: Union[Unset, str] = UNSET
     success: Union[Unset, bool] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        auth_token = self.auth_token
-
-        status: Union[Unset, str] = UNSET
-        if not isinstance(self.status, Unset):
-            status = self.status.value
+        qrcode = self.qrcode
 
         success = self.success
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if auth_token is not UNSET:
-            field_dict["authToken"] = auth_token
-        if status is not UNSET:
-            field_dict["status"] = status
+        if qrcode is not UNSET:
+            field_dict["qrcode"] = qrcode
         if success is not UNSET:
             field_dict["success"] = success
 
@@ -49,25 +40,17 @@ class AuthQRStatusResponse:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        auth_token = d.pop("authToken", UNSET)
-
-        _status = d.pop("status", UNSET)
-        status: Union[Unset, AuthQRStatusResponseStatus]
-        if isinstance(_status, Unset):
-            status = UNSET
-        else:
-            status = AuthQRStatusResponseStatus(_status)
+        qrcode = d.pop("qrcode", UNSET)
 
         success = d.pop("success", UNSET)
 
-        auth_qr_status_response = cls(
-            auth_token=auth_token,
-            status=status,
+        qr_code_response = cls(
+            qrcode=qrcode,
             success=success,
         )
 
-        auth_qr_status_response.additional_properties = d
-        return auth_qr_status_response
+        qr_code_response.additional_properties = d
+        return qr_code_response
 
     @property
     def additional_keys(self) -> list[str]:

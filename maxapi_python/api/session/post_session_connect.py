@@ -43,11 +43,6 @@ def _parse_response(
 
         return response_400
 
-    if response.status_code == 409:
-        response_409 = ErrorResponse.from_dict(response.json())
-
-        return response_409
-
     if response.status_code == 500:
         response_500 = ErrorResponse.from_dict(response.json())
 
@@ -75,9 +70,10 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: ConnectBody,
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
-    """Connect to MAX servers
+    """Open a MAX session (QR or token-based)
 
-     Initiates connection to MAX servers using saved auth token
+     Kicks off a QR auth session when no auth token is stored, or reconnects with saved credentials. Poll
+    GET /session/qr for the rendered QR code.
 
     Args:
         body (ConnectBody):
@@ -106,9 +102,10 @@ def sync(
     client: AuthenticatedClient,
     body: ConnectBody,
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
-    """Connect to MAX servers
+    """Open a MAX session (QR or token-based)
 
-     Initiates connection to MAX servers using saved auth token
+     Kicks off a QR auth session when no auth token is stored, or reconnects with saved credentials. Poll
+    GET /session/qr for the rendered QR code.
 
     Args:
         body (ConnectBody):
@@ -132,9 +129,10 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: ConnectBody,
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
-    """Connect to MAX servers
+    """Open a MAX session (QR or token-based)
 
-     Initiates connection to MAX servers using saved auth token
+     Kicks off a QR auth session when no auth token is stored, or reconnects with saved credentials. Poll
+    GET /session/qr for the rendered QR code.
 
     Args:
         body (ConnectBody):
@@ -161,9 +159,10 @@ async def asyncio(
     client: AuthenticatedClient,
     body: ConnectBody,
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
-    """Connect to MAX servers
+    """Open a MAX session (QR or token-based)
 
-     Initiates connection to MAX servers using saved auth token
+     Kicks off a QR auth session when no auth token is stored, or reconnects with saved credentials. Poll
+    GET /session/qr for the rendered QR code.
 
     Args:
         body (ConnectBody):

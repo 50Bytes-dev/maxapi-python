@@ -47,9 +47,9 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[MessageResponse]:
-    """Disconnect from MAX servers
+    """Disconnect from MAX / cancel QR session
 
-     Closes connection to MAX servers
+     Closes connection to MAX servers or cancels an in-progress QR auth session.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -72,9 +72,9 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> Optional[MessageResponse]:
-    """Disconnect from MAX servers
+    """Disconnect from MAX / cancel QR session
 
-     Closes connection to MAX servers
+     Closes connection to MAX servers or cancels an in-progress QR auth session.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -93,9 +93,9 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[MessageResponse]:
-    """Disconnect from MAX servers
+    """Disconnect from MAX / cancel QR session
 
-     Closes connection to MAX servers
+     Closes connection to MAX servers or cancels an in-progress QR auth session.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -116,9 +116,9 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> Optional[MessageResponse]:
-    """Disconnect from MAX servers
+    """Disconnect from MAX / cancel QR session
 
-     Closes connection to MAX servers
+     Closes connection to MAX servers or cancels an in-progress QR auth session.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
