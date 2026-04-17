@@ -5,38 +5,34 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.auth_qr_start_response import AuthQRStartResponse
 from ...models.error_response import ErrorResponse
-from ...models.post_session_auth_qr_start_body import PostSessionAuthQrStartBody
+from ...models.user_response import UserResponse
 from ...types import Response
 
 
 def _get_kwargs(
-    *,
-    body: PostSessionAuthQrStartBody,
+    userid: str,
 ) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
-
     _kwargs: dict[str, Any] = {
-        "method": "post",
-        "url": "/session/auth/qr/start",
+        "method": "get",
+        "url": f"/admin/users/{userid}",
     }
 
-    _kwargs["json"] = body.to_dict()
-
-    headers["Content-Type"] = "application/json"
-
-    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[AuthQRStartResponse, ErrorResponse]]:
+) -> Optional[Union[ErrorResponse, UserResponse]]:
     if response.status_code == 200:
-        response_200 = AuthQRStartResponse.from_dict(response.json())
+        response_200 = UserResponse.from_dict(response.json())
 
         return response_200
+
+    if response.status_code == 404:
+        response_404 = ErrorResponse.from_dict(response.json())
+
+        return response_404
 
     if response.status_code == 500:
         response_500 = ErrorResponse.from_dict(response.json())
@@ -51,7 +47,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[AuthQRStartResponse, ErrorResponse]]:
+) -> Response[Union[ErrorResponse, UserResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -61,28 +57,27 @@ def _build_response(
 
 
 def sync_detailed(
+    userid: str,
     *,
     client: AuthenticatedClient,
-    body: PostSessionAuthQrStartBody,
-) -> Response[Union[AuthQRStartResponse, ErrorResponse]]:
-    """Start QR auth session
+) -> Response[Union[ErrorResponse, UserResponse]]:
+    """Get user by ID
 
-     Opens a WebSocket, requests a QR auth session, returns link + base64 PNG. Poll
-    /session/auth/qr/status until scanned.
+     Returns a single user by their ID.
 
     Args:
-        body (PostSessionAuthQrStartBody):
+        userid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AuthQRStartResponse, ErrorResponse]]
+        Response[Union[ErrorResponse, UserResponse]]
     """
 
     kwargs = _get_kwargs(
-        body=body,
+        userid=userid,
     )
 
     response = client.get_httpx_client().request(
@@ -93,55 +88,53 @@ def sync_detailed(
 
 
 def sync(
+    userid: str,
     *,
     client: AuthenticatedClient,
-    body: PostSessionAuthQrStartBody,
-) -> Optional[Union[AuthQRStartResponse, ErrorResponse]]:
-    """Start QR auth session
+) -> Optional[Union[ErrorResponse, UserResponse]]:
+    """Get user by ID
 
-     Opens a WebSocket, requests a QR auth session, returns link + base64 PNG. Poll
-    /session/auth/qr/status until scanned.
+     Returns a single user by their ID.
 
     Args:
-        body (PostSessionAuthQrStartBody):
+        userid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AuthQRStartResponse, ErrorResponse]
+        Union[ErrorResponse, UserResponse]
     """
 
     return sync_detailed(
+        userid=userid,
         client=client,
-        body=body,
     ).parsed
 
 
 async def asyncio_detailed(
+    userid: str,
     *,
     client: AuthenticatedClient,
-    body: PostSessionAuthQrStartBody,
-) -> Response[Union[AuthQRStartResponse, ErrorResponse]]:
-    """Start QR auth session
+) -> Response[Union[ErrorResponse, UserResponse]]:
+    """Get user by ID
 
-     Opens a WebSocket, requests a QR auth session, returns link + base64 PNG. Poll
-    /session/auth/qr/status until scanned.
+     Returns a single user by their ID.
 
     Args:
-        body (PostSessionAuthQrStartBody):
+        userid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AuthQRStartResponse, ErrorResponse]]
+        Response[Union[ErrorResponse, UserResponse]]
     """
 
     kwargs = _get_kwargs(
-        body=body,
+        userid=userid,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -150,29 +143,28 @@ async def asyncio_detailed(
 
 
 async def asyncio(
+    userid: str,
     *,
     client: AuthenticatedClient,
-    body: PostSessionAuthQrStartBody,
-) -> Optional[Union[AuthQRStartResponse, ErrorResponse]]:
-    """Start QR auth session
+) -> Optional[Union[ErrorResponse, UserResponse]]:
+    """Get user by ID
 
-     Opens a WebSocket, requests a QR auth session, returns link + base64 PNG. Poll
-    /session/auth/qr/status until scanned.
+     Returns a single user by their ID.
 
     Args:
-        body (PostSessionAuthQrStartBody):
+        userid (str):
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AuthQRStartResponse, ErrorResponse]
+        Union[ErrorResponse, UserResponse]
     """
 
     return (
         await asyncio_detailed(
+            userid=userid,
             client=client,
-            body=body,
         )
     ).parsed

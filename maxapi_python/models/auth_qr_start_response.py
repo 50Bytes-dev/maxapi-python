@@ -14,84 +14,84 @@ class AuthQRStartResponse:
     """QR auth session created
 
     Attributes:
-        success (Union[Unset, bool]):  Example: True.
-        qr_link (Union[Unset, str]):  Example: https://max.ru/:auth/6bc2adb2-6b23-4a7d-a96c-320bee4ed0d7.
-        qr_code_base_64 (Union[Unset, str]):  Example: data:image/png;base64,....
-        track_id (Union[Unset, str]):  Example: 6bc2adb2-6b23-4a7d-a96c-320bee4ed0d7.
-        polling_interval (Union[Unset, int]):  Example: 5000.
-        ttl (Union[Unset, int]):  Example: 120000.
         expires_at (Union[Unset, int]):  Example: 1776435251750.
+        polling_interval (Union[Unset, int]):  Example: 5000.
+        qr_code_base_64 (Union[Unset, str]):  Example: data:image/png;base64,....
+        qr_link (Union[Unset, str]):  Example: https://max.ru/:auth/6bc2adb2-6b23-4a7d-a96c-320bee4ed0d7.
+        success (Union[Unset, bool]):  Example: True.
+        track_id (Union[Unset, str]):  Example: 6bc2adb2-6b23-4a7d-a96c-320bee4ed0d7.
+        ttl (Union[Unset, int]):  Example: 120000.
     """
 
-    success: Union[Unset, bool] = UNSET
-    qr_link: Union[Unset, str] = UNSET
-    qr_code_base_64: Union[Unset, str] = UNSET
-    track_id: Union[Unset, str] = UNSET
-    polling_interval: Union[Unset, int] = UNSET
-    ttl: Union[Unset, int] = UNSET
     expires_at: Union[Unset, int] = UNSET
+    polling_interval: Union[Unset, int] = UNSET
+    qr_code_base_64: Union[Unset, str] = UNSET
+    qr_link: Union[Unset, str] = UNSET
+    success: Union[Unset, bool] = UNSET
+    track_id: Union[Unset, str] = UNSET
+    ttl: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        success = self.success
-
-        qr_link = self.qr_link
-
-        qr_code_base_64 = self.qr_code_base_64
-
-        track_id = self.track_id
+        expires_at = self.expires_at
 
         polling_interval = self.polling_interval
 
-        ttl = self.ttl
+        qr_code_base_64 = self.qr_code_base_64
 
-        expires_at = self.expires_at
+        qr_link = self.qr_link
+
+        success = self.success
+
+        track_id = self.track_id
+
+        ttl = self.ttl
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if success is not UNSET:
-            field_dict["success"] = success
-        if qr_link is not UNSET:
-            field_dict["qrLink"] = qr_link
-        if qr_code_base_64 is not UNSET:
-            field_dict["qrCodeBase64"] = qr_code_base_64
-        if track_id is not UNSET:
-            field_dict["trackId"] = track_id
-        if polling_interval is not UNSET:
-            field_dict["pollingInterval"] = polling_interval
-        if ttl is not UNSET:
-            field_dict["ttl"] = ttl
         if expires_at is not UNSET:
             field_dict["expiresAt"] = expires_at
+        if polling_interval is not UNSET:
+            field_dict["pollingInterval"] = polling_interval
+        if qr_code_base_64 is not UNSET:
+            field_dict["qrCodeBase64"] = qr_code_base_64
+        if qr_link is not UNSET:
+            field_dict["qrLink"] = qr_link
+        if success is not UNSET:
+            field_dict["success"] = success
+        if track_id is not UNSET:
+            field_dict["trackId"] = track_id
+        if ttl is not UNSET:
+            field_dict["ttl"] = ttl
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        success = d.pop("success", UNSET)
-
-        qr_link = d.pop("qrLink", UNSET)
-
-        qr_code_base_64 = d.pop("qrCodeBase64", UNSET)
-
-        track_id = d.pop("trackId", UNSET)
+        expires_at = d.pop("expiresAt", UNSET)
 
         polling_interval = d.pop("pollingInterval", UNSET)
 
+        qr_code_base_64 = d.pop("qrCodeBase64", UNSET)
+
+        qr_link = d.pop("qrLink", UNSET)
+
+        success = d.pop("success", UNSET)
+
+        track_id = d.pop("trackId", UNSET)
+
         ttl = d.pop("ttl", UNSET)
 
-        expires_at = d.pop("expiresAt", UNSET)
-
         auth_qr_start_response = cls(
-            success=success,
-            qr_link=qr_link,
-            qr_code_base_64=qr_code_base_64,
-            track_id=track_id,
-            polling_interval=polling_interval,
-            ttl=ttl,
             expires_at=expires_at,
+            polling_interval=polling_interval,
+            qr_code_base_64=qr_code_base_64,
+            qr_link=qr_link,
+            success=success,
+            track_id=track_id,
+            ttl=ttl,
         )
 
         auth_qr_start_response.additional_properties = d

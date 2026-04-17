@@ -49,7 +49,7 @@ def sync_detailed(
 ) -> Response[MessageResponse]:
     """Cancel QR auth session
 
-     Close an in-progress QR auth session and clear the stored trackId.
+     Closes the temporary WebSocket used for QR auth and clears the stored trackId.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -74,7 +74,7 @@ def sync(
 ) -> Optional[MessageResponse]:
     """Cancel QR auth session
 
-     Close an in-progress QR auth session and clear the stored trackId.
+     Closes the temporary WebSocket used for QR auth and clears the stored trackId.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -95,7 +95,7 @@ async def asyncio_detailed(
 ) -> Response[MessageResponse]:
     """Cancel QR auth session
 
-     Close an in-progress QR auth session and clear the stored trackId.
+     Closes the temporary WebSocket used for QR auth and clears the stored trackId.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -118,7 +118,7 @@ async def asyncio(
 ) -> Optional[MessageResponse]:
     """Cancel QR auth session
 
-     Close an in-progress QR auth session and clear the stored trackId.
+     Closes the temporary WebSocket used for QR auth and clears the stored trackId.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

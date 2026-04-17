@@ -55,7 +55,7 @@ def sync_detailed(
 ) -> Response[Union[ErrorResponse, ListUsersResponse]]:
     """List all users
 
-     Returns a list of all users in the system
+     Returns every user registered in the system.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -80,7 +80,7 @@ def sync(
 ) -> Optional[Union[ErrorResponse, ListUsersResponse]]:
     """List all users
 
-     Returns a list of all users in the system
+     Returns every user registered in the system.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -101,7 +101,7 @@ async def asyncio_detailed(
 ) -> Response[Union[ErrorResponse, ListUsersResponse]]:
     """List all users
 
-     Returns a list of all users in the system
+     Returns every user registered in the system.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -124,7 +124,7 @@ async def asyncio(
 ) -> Optional[Union[ErrorResponse, ListUsersResponse]]:
     """List all users
 
-     Returns a list of all users in the system
+     Returns every user registered in the system.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

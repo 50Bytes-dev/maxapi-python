@@ -15,41 +15,41 @@ class AuthQRStatusResponse:
     """QR auth session status
 
     Attributes:
-        success (Union[Unset, bool]):  Example: True.
-        status (Union[Unset, AuthQRStatusResponseStatus]):  Example: pending.
         auth_token (Union[Unset, str]):  Example: auth_token_value.
+        status (Union[Unset, AuthQRStatusResponseStatus]):  Example: pending.
+        success (Union[Unset, bool]):  Example: True.
     """
 
-    success: Union[Unset, bool] = UNSET
-    status: Union[Unset, AuthQRStatusResponseStatus] = UNSET
     auth_token: Union[Unset, str] = UNSET
+    status: Union[Unset, AuthQRStatusResponseStatus] = UNSET
+    success: Union[Unset, bool] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        success = self.success
+        auth_token = self.auth_token
 
         status: Union[Unset, str] = UNSET
         if not isinstance(self.status, Unset):
             status = self.status.value
 
-        auth_token = self.auth_token
+        success = self.success
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if success is not UNSET:
-            field_dict["success"] = success
-        if status is not UNSET:
-            field_dict["status"] = status
         if auth_token is not UNSET:
             field_dict["authToken"] = auth_token
+        if status is not UNSET:
+            field_dict["status"] = status
+        if success is not UNSET:
+            field_dict["success"] = success
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        success = d.pop("success", UNSET)
+        auth_token = d.pop("authToken", UNSET)
 
         _status = d.pop("status", UNSET)
         status: Union[Unset, AuthQRStatusResponseStatus]
@@ -58,12 +58,12 @@ class AuthQRStatusResponse:
         else:
             status = AuthQRStatusResponseStatus(_status)
 
-        auth_token = d.pop("authToken", UNSET)
+        success = d.pop("success", UNSET)
 
         auth_qr_status_response = cls(
-            success=success,
-            status=status,
             auth_token=auth_token,
+            status=status,
+            success=success,
         )
 
         auth_qr_status_response.additional_properties = d
