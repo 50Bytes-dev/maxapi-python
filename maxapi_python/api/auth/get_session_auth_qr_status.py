@@ -5,36 +5,25 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.auth_confirm_body import AuthConfirmBody
-from ...models.auth_confirm_response import AuthConfirmResponse
+from ...models.auth_qr_status_response import AuthQRStatusResponse
 from ...models.error_response import ErrorResponse
 from ...types import Response
 
 
-def _get_kwargs(
-    *,
-    body: AuthConfirmBody,
-) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
-
+def _get_kwargs() -> dict[str, Any]:
     _kwargs: dict[str, Any] = {
-        "method": "post",
-        "url": "/session/auth/confirm",
+        "method": "get",
+        "url": "/session/auth/qr/status",
     }
 
-    _kwargs["json"] = body.to_dict()
-
-    headers["Content-Type"] = "application/json"
-
-    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[AuthConfirmResponse, ErrorResponse]]:
+) -> Optional[Union[AuthQRStatusResponse, ErrorResponse]]:
     if response.status_code == 200:
-        response_200 = AuthConfirmResponse.from_dict(response.json())
+        response_200 = AuthQRStatusResponse.from_dict(response.json())
 
         return response_200
 
@@ -51,7 +40,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[AuthConfirmResponse, ErrorResponse]]:
+) -> Response[Union[AuthQRStatusResponse, ErrorResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -63,26 +52,21 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: AuthConfirmBody,
-) -> Response[Union[AuthConfirmResponse, ErrorResponse]]:
-    """Confirm SMS verification code
+) -> Response[Union[AuthQRStatusResponse, ErrorResponse]]:
+    """Poll QR auth status
 
-     Verifies the SMS code and returns auth token
-
-    Args:
-        body (AuthConfirmBody):
+     Poll the QR auth session. When scanned, the server exchanges the session for an auth token and
+    returns it.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AuthConfirmResponse, ErrorResponse]]
+        Response[Union[AuthQRStatusResponse, ErrorResponse]]
     """
 
-    kwargs = _get_kwargs(
-        body=body,
-    )
+    kwargs = _get_kwargs()
 
     response = client.get_httpx_client().request(
         **kwargs,
@@ -94,52 +78,43 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: AuthConfirmBody,
-) -> Optional[Union[AuthConfirmResponse, ErrorResponse]]:
-    """Confirm SMS verification code
+) -> Optional[Union[AuthQRStatusResponse, ErrorResponse]]:
+    """Poll QR auth status
 
-     Verifies the SMS code and returns auth token
-
-    Args:
-        body (AuthConfirmBody):
+     Poll the QR auth session. When scanned, the server exchanges the session for an auth token and
+    returns it.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AuthConfirmResponse, ErrorResponse]
+        Union[AuthQRStatusResponse, ErrorResponse]
     """
 
     return sync_detailed(
         client=client,
-        body=body,
     ).parsed
 
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: AuthConfirmBody,
-) -> Response[Union[AuthConfirmResponse, ErrorResponse]]:
-    """Confirm SMS verification code
+) -> Response[Union[AuthQRStatusResponse, ErrorResponse]]:
+    """Poll QR auth status
 
-     Verifies the SMS code and returns auth token
-
-    Args:
-        body (AuthConfirmBody):
+     Poll the QR auth session. When scanned, the server exchanges the session for an auth token and
+    returns it.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AuthConfirmResponse, ErrorResponse]]
+        Response[Union[AuthQRStatusResponse, ErrorResponse]]
     """
 
-    kwargs = _get_kwargs(
-        body=body,
-    )
+    kwargs = _get_kwargs()
 
     response = await client.get_async_httpx_client().request(**kwargs)
 
@@ -149,26 +124,22 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: AuthConfirmBody,
-) -> Optional[Union[AuthConfirmResponse, ErrorResponse]]:
-    """Confirm SMS verification code
+) -> Optional[Union[AuthQRStatusResponse, ErrorResponse]]:
+    """Poll QR auth status
 
-     Verifies the SMS code and returns auth token
-
-    Args:
-        body (AuthConfirmBody):
+     Poll the QR auth session. When scanned, the server exchanges the session for an auth token and
+    returns it.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AuthConfirmResponse, ErrorResponse]
+        Union[AuthQRStatusResponse, ErrorResponse]
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            body=body,
         )
     ).parsed

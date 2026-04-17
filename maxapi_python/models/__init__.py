@@ -3,12 +3,9 @@
 from .add_user_body import AddUserBody
 from .add_user_response import AddUserResponse
 from .audio_body import AudioBody
-from .auth_confirm_body import AuthConfirmBody
-from .auth_confirm_response import AuthConfirmResponse
-from .auth_register_body import AuthRegisterBody
-from .auth_register_response import AuthRegisterResponse
-from .auth_request_body import AuthRequestBody
-from .auth_request_response import AuthRequestResponse
+from .auth_qr_start_response import AuthQRStartResponse
+from .auth_qr_status_response import AuthQRStatusResponse
+from .auth_qr_status_response_status import AuthQRStatusResponseStatus
 from .chat_history_body import ChatHistoryBody
 from .chat_history_response import ChatHistoryResponse
 from .chat_history_response_messages_item import ChatHistoryResponseMessagesItem
@@ -59,12 +56,9 @@ __all__ = (
     "AddUserBody",
     "AddUserResponse",
     "AudioBody",
-    "AuthConfirmBody",
-    "AuthConfirmResponse",
-    "AuthRegisterBody",
-    "AuthRegisterResponse",
-    "AuthRequestBody",
-    "AuthRequestResponse",
+    "AuthQRStartResponse",
+    "AuthQRStatusResponse",
+    "AuthQRStatusResponseStatus",
     "ChatHistoryBody",
     "ChatHistoryResponse",
     "ChatHistoryResponseMessagesItem",

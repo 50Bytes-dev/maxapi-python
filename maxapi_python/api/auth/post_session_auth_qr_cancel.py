@@ -5,43 +5,26 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.auth_register_body import AuthRegisterBody
-from ...models.auth_register_response import AuthRegisterResponse
-from ...models.error_response import ErrorResponse
+from ...models.message_response import MessageResponse
 from ...types import Response
 
 
-def _get_kwargs(
-    *,
-    body: AuthRegisterBody,
-) -> dict[str, Any]:
-    headers: dict[str, Any] = {}
-
+def _get_kwargs() -> dict[str, Any]:
     _kwargs: dict[str, Any] = {
         "method": "post",
-        "url": "/session/auth/register",
+        "url": "/session/auth/qr/cancel",
     }
 
-    _kwargs["json"] = body.to_dict()
-
-    headers["Content-Type"] = "application/json"
-
-    _kwargs["headers"] = headers
     return _kwargs
 
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[AuthRegisterResponse, ErrorResponse]]:
+) -> Optional[MessageResponse]:
     if response.status_code == 200:
-        response_200 = AuthRegisterResponse.from_dict(response.json())
+        response_200 = MessageResponse.from_dict(response.json())
 
         return response_200
-
-    if response.status_code == 400:
-        response_400 = ErrorResponse.from_dict(response.json())
-
-        return response_400
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -51,7 +34,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[AuthRegisterResponse, ErrorResponse]]:
+) -> Response[MessageResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -63,26 +46,20 @@ def _build_response(
 def sync_detailed(
     *,
     client: AuthenticatedClient,
-    body: AuthRegisterBody,
-) -> Response[Union[AuthRegisterResponse, ErrorResponse]]:
-    """Register new user
+) -> Response[MessageResponse]:
+    """Cancel QR auth session
 
-     Registers a new user with first and last name
-
-    Args:
-        body (AuthRegisterBody):
+     Close an in-progress QR auth session and clear the stored trackId.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AuthRegisterResponse, ErrorResponse]]
+        Response[MessageResponse]
     """
 
-    kwargs = _get_kwargs(
-        body=body,
-    )
+    kwargs = _get_kwargs()
 
     response = client.get_httpx_client().request(
         **kwargs,
@@ -94,52 +71,41 @@ def sync_detailed(
 def sync(
     *,
     client: AuthenticatedClient,
-    body: AuthRegisterBody,
-) -> Optional[Union[AuthRegisterResponse, ErrorResponse]]:
-    """Register new user
+) -> Optional[MessageResponse]:
+    """Cancel QR auth session
 
-     Registers a new user with first and last name
-
-    Args:
-        body (AuthRegisterBody):
+     Close an in-progress QR auth session and clear the stored trackId.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AuthRegisterResponse, ErrorResponse]
+        MessageResponse
     """
 
     return sync_detailed(
         client=client,
-        body=body,
     ).parsed
 
 
 async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
-    body: AuthRegisterBody,
-) -> Response[Union[AuthRegisterResponse, ErrorResponse]]:
-    """Register new user
+) -> Response[MessageResponse]:
+    """Cancel QR auth session
 
-     Registers a new user with first and last name
-
-    Args:
-        body (AuthRegisterBody):
+     Close an in-progress QR auth session and clear the stored trackId.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[AuthRegisterResponse, ErrorResponse]]
+        Response[MessageResponse]
     """
 
-    kwargs = _get_kwargs(
-        body=body,
-    )
+    kwargs = _get_kwargs()
 
     response = await client.get_async_httpx_client().request(**kwargs)
 
@@ -149,26 +115,21 @@ async def asyncio_detailed(
 async def asyncio(
     *,
     client: AuthenticatedClient,
-    body: AuthRegisterBody,
-) -> Optional[Union[AuthRegisterResponse, ErrorResponse]]:
-    """Register new user
+) -> Optional[MessageResponse]:
+    """Cancel QR auth session
 
-     Registers a new user with first and last name
-
-    Args:
-        body (AuthRegisterBody):
+     Close an in-progress QR auth session and clear the stored trackId.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[AuthRegisterResponse, ErrorResponse]
+        MessageResponse
     """
 
     return (
         await asyncio_detailed(
             client=client,
-            body=body,
         )
     ).parsed
