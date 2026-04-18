@@ -1,44 +1,43 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import TYPE_CHECKING, Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
-T = TypeVar("T", bound="ErrorResponse")
+if TYPE_CHECKING:
+    from ..models.user_detail import UserDetail
+
+
+T = TypeVar("T", bound="UserDetailResponse")
 
 
 @_attrs_define
-class ErrorResponse:
-    """Error response format. `code` is a stable machine-readable constant (e.g. INVALID_INPUT, NOT_FOUND, AUTH_EXPIRED);
-    `error` is a free-form human description.
+class UserDetailResponse:
+    """GET /admin/users/{userid} response envelope.
 
-        Attributes:
-            code (Union[Unset, str]):  Example: INVALID_INPUT.
-            error (Union[Unset, str]):  Example: error message.
-            success (Union[Unset, bool]):
+    Attributes:
+        data (Union[Unset, UserDetail]): Detailed user record with secrets masked.
+        success (Union[Unset, bool]):  Example: True.
     """
 
-    code: Union[Unset, str] = UNSET
-    error: Union[Unset, str] = UNSET
+    data: Union[Unset, "UserDetail"] = UNSET
     success: Union[Unset, bool] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        code = self.code
-
-        error = self.error
+        data: Union[Unset, dict[str, Any]] = UNSET
+        if not isinstance(self.data, Unset):
+            data = self.data.to_dict()
 
         success = self.success
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if code is not UNSET:
-            field_dict["code"] = code
-        if error is not UNSET:
-            field_dict["error"] = error
+        if data is not UNSET:
+            field_dict["data"] = data
         if success is not UNSET:
             field_dict["success"] = success
 
@@ -46,21 +45,25 @@ class ErrorResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        d = dict(src_dict)
-        code = d.pop("code", UNSET)
+        from ..models.user_detail import UserDetail
 
-        error = d.pop("error", UNSET)
+        d = dict(src_dict)
+        _data = d.pop("data", UNSET)
+        data: Union[Unset, UserDetail]
+        if isinstance(_data, Unset):
+            data = UNSET
+        else:
+            data = UserDetail.from_dict(_data)
 
         success = d.pop("success", UNSET)
 
-        error_response = cls(
-            code=code,
-            error=error,
+        user_detail_response = cls(
+            data=data,
             success=success,
         )
 
-        error_response.additional_properties = d
-        return error_response
+        user_detail_response.additional_properties = d
+        return user_detail_response
 
     @property
     def additional_keys(self) -> list[str]:

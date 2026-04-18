@@ -11,7 +11,8 @@ T = TypeVar("T", bound="UserResponse")
 
 @_attrs_define
 class UserResponse:
-    """
+    """Summary fields for a user in the system
+
     Attributes:
         authenticated (Union[Unset, bool]):  Example: True.
         connected (Union[Unset, int]):  Example: 1.

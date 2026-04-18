@@ -5,17 +5,14 @@ import httpx
 
 from ... import errors
 from ...client import AuthenticatedClient, Client
-from ...models.error_response import ErrorResponse
-from ...models.user_detail_response import UserDetailResponse
+from ...models.health_response import HealthResponse
 from ...types import Response
 
 
-def _get_kwargs(
-    userid: str,
-) -> dict[str, Any]:
+def _get_kwargs() -> dict[str, Any]:
     _kwargs: dict[str, Any] = {
         "method": "get",
-        "url": f"/admin/users/{userid}",
+        "url": "/health",
     }
 
     return _kwargs
@@ -23,26 +20,16 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResponse, UserDetailResponse]]:
+) -> Optional[HealthResponse]:
     if response.status_code == 200:
-        response_200 = UserDetailResponse.from_dict(response.json())
+        response_200 = HealthResponse.from_dict(response.json())
 
         return response_200
 
-    if response.status_code == 400:
-        response_400 = ErrorResponse.from_dict(response.json())
+    if response.status_code == 503:
+        response_503 = HealthResponse.from_dict(response.json())
 
-        return response_400
-
-    if response.status_code == 404:
-        response_404 = ErrorResponse.from_dict(response.json())
-
-        return response_404
-
-    if response.status_code == 500:
-        response_500 = ErrorResponse.from_dict(response.json())
-
-        return response_500
+        return response_503
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -52,7 +39,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResponse, UserDetailResponse]]:
+) -> Response[HealthResponse]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -62,29 +49,22 @@ def _build_response(
 
 
 def sync_detailed(
-    userid: str,
     *,
-    client: AuthenticatedClient,
-) -> Response[Union[ErrorResponse, UserDetailResponse]]:
-    """Get user by ID
+    client: Union[AuthenticatedClient, Client],
+) -> Response[HealthResponse]:
+    """Health check
 
-     Returns a single user by their ID. Secrets (auth_token, s3 keys,
-    proxy password) are never returned raw — see UserDetail.
-
-    Args:
-        userid (str):
+     Liveness + readiness snapshot. Returns 200 when DB pings, 503 otherwise.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResponse, UserDetailResponse]]
+        Response[HealthResponse]
     """
 
-    kwargs = _get_kwargs(
-        userid=userid,
-    )
+    kwargs = _get_kwargs()
 
     response = client.get_httpx_client().request(
         **kwargs,
@@ -94,56 +74,43 @@ def sync_detailed(
 
 
 def sync(
-    userid: str,
     *,
-    client: AuthenticatedClient,
-) -> Optional[Union[ErrorResponse, UserDetailResponse]]:
-    """Get user by ID
+    client: Union[AuthenticatedClient, Client],
+) -> Optional[HealthResponse]:
+    """Health check
 
-     Returns a single user by their ID. Secrets (auth_token, s3 keys,
-    proxy password) are never returned raw — see UserDetail.
-
-    Args:
-        userid (str):
+     Liveness + readiness snapshot. Returns 200 when DB pings, 503 otherwise.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResponse, UserDetailResponse]
+        HealthResponse
     """
 
     return sync_detailed(
-        userid=userid,
         client=client,
     ).parsed
 
 
 async def asyncio_detailed(
-    userid: str,
     *,
-    client: AuthenticatedClient,
-) -> Response[Union[ErrorResponse, UserDetailResponse]]:
-    """Get user by ID
+    client: Union[AuthenticatedClient, Client],
+) -> Response[HealthResponse]:
+    """Health check
 
-     Returns a single user by their ID. Secrets (auth_token, s3 keys,
-    proxy password) are never returned raw — see UserDetail.
-
-    Args:
-        userid (str):
+     Liveness + readiness snapshot. Returns 200 when DB pings, 503 otherwise.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResponse, UserDetailResponse]]
+        Response[HealthResponse]
     """
 
-    kwargs = _get_kwargs(
-        userid=userid,
-    )
+    kwargs = _get_kwargs()
 
     response = await client.get_async_httpx_client().request(**kwargs)
 
@@ -151,29 +118,23 @@ async def asyncio_detailed(
 
 
 async def asyncio(
-    userid: str,
     *,
-    client: AuthenticatedClient,
-) -> Optional[Union[ErrorResponse, UserDetailResponse]]:
-    """Get user by ID
+    client: Union[AuthenticatedClient, Client],
+) -> Optional[HealthResponse]:
+    """Health check
 
-     Returns a single user by their ID. Secrets (auth_token, s3 keys,
-    proxy password) are never returned raw — see UserDetail.
-
-    Args:
-        userid (str):
+     Liveness + readiness snapshot. Returns 200 when DB pings, 503 otherwise.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResponse, UserDetailResponse]
+        HealthResponse
     """
 
     return (
         await asyncio_detailed(
-            userid=userid,
             client=client,
         )
     ).parsed

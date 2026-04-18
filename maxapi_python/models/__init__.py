@@ -28,6 +28,7 @@ from .group_info_body import GroupInfoBody
 from .group_join_body import GroupJoinBody
 from .group_name_body import GroupNameBody
 from .group_topic_body import GroupTopicBody
+from .health_response import HealthResponse
 from .image_body import ImageBody
 from .invite_link_response import InviteLinkResponse
 from .list_users_response import ListUsersResponse
@@ -42,6 +43,8 @@ from .send_message_response import SendMessageResponse
 from .status_response import StatusResponse
 from .update_participants_body import UpdateParticipantsBody
 from .update_participants_body_operation import UpdateParticipantsBodyOperation
+from .user_detail import UserDetail
+from .user_detail_response import UserDetailResponse
 from .user_info_body import UserInfoBody
 from .user_info_response import UserInfoResponse
 from .user_info_response_users_item import UserInfoResponseUsersItem
@@ -79,6 +82,7 @@ __all__ = (
     "GroupJoinBody",
     "GroupNameBody",
     "GroupTopicBody",
+    "HealthResponse",
     "ImageBody",
     "InviteLinkResponse",
     "ListUsersResponse",
@@ -93,6 +97,8 @@ __all__ = (
     "StatusResponse",
     "UpdateParticipantsBody",
     "UpdateParticipantsBodyOperation",
+    "UserDetail",
+    "UserDetailResponse",
     "UserInfoBody",
     "UserInfoResponse",
     "UserInfoResponseUsersItem",
