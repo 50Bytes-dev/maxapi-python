@@ -66,9 +66,8 @@ def sync_detailed(
      Stops the account's MAX session and deletes the account with its MAX
     login and phone lookup cache. Succeeds for an unknown id too. No webhook
     is sent, and the session is not logged out in MAX (`POST /session/logout`
-    does that). A pause of its MAX account stays. A token used since the last
-    restart keeps passing authentication until a restart (see the
-    description at the top).
+    does that). A pause of its MAX account stays. The account's token
+    answers `401` from then on.
 
     Args:
         userid (str):
@@ -102,9 +101,8 @@ def sync(
      Stops the account's MAX session and deletes the account with its MAX
     login and phone lookup cache. Succeeds for an unknown id too. No webhook
     is sent, and the session is not logged out in MAX (`POST /session/logout`
-    does that). A pause of its MAX account stays. A token used since the last
-    restart keeps passing authentication until a restart (see the
-    description at the top).
+    does that). A pause of its MAX account stays. The account's token
+    answers `401` from then on.
 
     Args:
         userid (str):
@@ -133,9 +131,8 @@ async def asyncio_detailed(
      Stops the account's MAX session and deletes the account with its MAX
     login and phone lookup cache. Succeeds for an unknown id too. No webhook
     is sent, and the session is not logged out in MAX (`POST /session/logout`
-    does that). A pause of its MAX account stays. A token used since the last
-    restart keeps passing authentication until a restart (see the
-    description at the top).
+    does that). A pause of its MAX account stays. The account's token
+    answers `401` from then on.
 
     Args:
         userid (str):
@@ -167,9 +164,8 @@ async def asyncio(
      Stops the account's MAX session and deletes the account with its MAX
     login and phone lookup cache. Succeeds for an unknown id too. No webhook
     is sent, and the session is not logged out in MAX (`POST /session/logout`
-    does that). A pause of its MAX account stays. A token used since the last
-    restart keeps passing authentication until a restart (see the
-    description at the top).
+    does that). A pause of its MAX account stays. The account's token
+    answers `401` from then on.
 
     Args:
         userid (str):

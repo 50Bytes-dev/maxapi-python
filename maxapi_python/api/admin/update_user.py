@@ -80,10 +80,8 @@ def sync_detailed(
     r"""Update an account
 
      Overwrites `name`, `webhook` and `events` with the body's values, an
-    absent field with \"\". Succeeds for an unknown id too. A token used since
-    the last restart keeps its cached webhook and events until a restart or
-    until the account itself sets them (`POST /webhook`,
-    `POST /session/connect`).
+    absent field with \"\". Succeeds for an unknown id too. The next event of
+    the account already goes to the new webhook and subscription.
 
     Args:
         userid (str):
@@ -118,10 +116,8 @@ def sync(
     r"""Update an account
 
      Overwrites `name`, `webhook` and `events` with the body's values, an
-    absent field with \"\". Succeeds for an unknown id too. A token used since
-    the last restart keeps its cached webhook and events until a restart or
-    until the account itself sets them (`POST /webhook`,
-    `POST /session/connect`).
+    absent field with \"\". Succeeds for an unknown id too. The next event of
+    the account already goes to the new webhook and subscription.
 
     Args:
         userid (str):
@@ -151,10 +147,8 @@ async def asyncio_detailed(
     r"""Update an account
 
      Overwrites `name`, `webhook` and `events` with the body's values, an
-    absent field with \"\". Succeeds for an unknown id too. A token used since
-    the last restart keeps its cached webhook and events until a restart or
-    until the account itself sets them (`POST /webhook`,
-    `POST /session/connect`).
+    absent field with \"\". Succeeds for an unknown id too. The next event of
+    the account already goes to the new webhook and subscription.
 
     Args:
         userid (str):
@@ -187,10 +181,8 @@ async def asyncio(
     r"""Update an account
 
      Overwrites `name`, `webhook` and `events` with the body's values, an
-    absent field with \"\". Succeeds for an unknown id too. A token used since
-    the last restart keeps its cached webhook and events until a restart or
-    until the account itself sets them (`POST /webhook`,
-    `POST /session/connect`).
+    absent field with \"\". Succeeds for an unknown id too. The next event of
+    the account already goes to the new webhook and subscription.
 
     Args:
         userid (str):
