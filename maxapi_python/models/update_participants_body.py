@@ -15,35 +15,35 @@ class UpdateParticipantsBody:
     """
     Attributes:
         chat_id (Union[Unset, int]):  Example: 123456789.
-        operation (Union[Unset, UpdateParticipantsBodyOperation]):  Example: add.
-        user_ids (Union[Unset, list[int]]):
+        user_ids (Union[Unset, list[int]]):  Example: [987654321].
+        operation (Union[Unset, UpdateParticipantsBodyOperation]): `add` adds; anything else removes Example: add.
     """
 
     chat_id: Union[Unset, int] = UNSET
-    operation: Union[Unset, UpdateParticipantsBodyOperation] = UNSET
     user_ids: Union[Unset, list[int]] = UNSET
+    operation: Union[Unset, UpdateParticipantsBodyOperation] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         chat_id = self.chat_id
 
-        operation: Union[Unset, str] = UNSET
-        if not isinstance(self.operation, Unset):
-            operation = self.operation.value
-
         user_ids: Union[Unset, list[int]] = UNSET
         if not isinstance(self.user_ids, Unset):
             user_ids = self.user_ids
+
+        operation: Union[Unset, str] = UNSET
+        if not isinstance(self.operation, Unset):
+            operation = self.operation.value
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
         if chat_id is not UNSET:
             field_dict["chatId"] = chat_id
-        if operation is not UNSET:
-            field_dict["operation"] = operation
         if user_ids is not UNSET:
             field_dict["userIds"] = user_ids
+        if operation is not UNSET:
+            field_dict["operation"] = operation
 
         return field_dict
 
@@ -52,6 +52,8 @@ class UpdateParticipantsBody:
         d = dict(src_dict)
         chat_id = d.pop("chatId", UNSET)
 
+        user_ids = cast(list[int], d.pop("userIds", UNSET))
+
         _operation = d.pop("operation", UNSET)
         operation: Union[Unset, UpdateParticipantsBodyOperation]
         if isinstance(_operation, Unset):
@@ -59,12 +61,10 @@ class UpdateParticipantsBody:
         else:
             operation = UpdateParticipantsBodyOperation(_operation)
 
-        user_ids = cast(list[int], d.pop("userIds", UNSET))
-
         update_participants_body = cls(
             chat_id=chat_id,
-            operation=operation,
             user_ids=user_ids,
+            operation=operation,
         )
 
         update_participants_body.additional_properties = d

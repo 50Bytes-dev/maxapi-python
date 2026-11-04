@@ -1,52 +1,50 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="InviteLinkResponse")
 
 
 @_attrs_define
 class InviteLinkResponse:
-    """Response with group invite link
-
+    """
     Attributes:
-        invite_link (Union[Unset, str]):  Example: https://max.ru/join/abc123.
-        success (Union[Unset, bool]):  Example: True.
+        success (bool):  Example: True.
+        invite_link (str): "" when the chat has no link Example: https://max.ru/join/abc123.
     """
 
-    invite_link: Union[Unset, str] = UNSET
-    success: Union[Unset, bool] = UNSET
+    success: bool
+    invite_link: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        invite_link = self.invite_link
-
         success = self.success
+
+        invite_link = self.invite_link
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if invite_link is not UNSET:
-            field_dict["inviteLink"] = invite_link
-        if success is not UNSET:
-            field_dict["success"] = success
+        field_dict.update(
+            {
+                "success": success,
+                "inviteLink": invite_link,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        invite_link = d.pop("inviteLink", UNSET)
+        success = d.pop("success")
 
-        success = d.pop("success", UNSET)
+        invite_link = d.pop("inviteLink")
 
         invite_link_response = cls(
-            invite_link=invite_link,
             success=success,
+            invite_link=invite_link,
         )
 
         invite_link_response.additional_properties = d

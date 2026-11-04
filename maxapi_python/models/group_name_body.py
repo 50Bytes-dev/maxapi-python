@@ -14,7 +14,7 @@ class GroupNameBody:
     """
     Attributes:
         chat_id (Union[Unset, int]):  Example: 123456789.
-        name (Union[Unset, str]):  Example: New Group Name.
+        name (Union[Unset, str]):  Example: Покупатели.
     """
 
     chat_id: Union[Unset, int] = UNSET

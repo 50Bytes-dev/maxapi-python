@@ -11,69 +11,97 @@ T = TypeVar("T", bound="StatusResponse")
 
 @_attrs_define
 class StatusResponse:
-    """Connection and authentication status
-
+    """
     Attributes:
-        authenticated (Union[Unset, bool]):  Example: True.
-        connected (Union[Unset, bool]):  Example: True.
-        logged_in (Union[Unset, bool]):  Example: True.
-        max_user_id (Union[Unset, int]):  Example: 123456789.
-        success (Union[Unset, bool]):  Example: True.
+        success (bool):  Example: True.
+        connected (bool): The account's MAX connection is up (the QR login's connection too). A paused account keeps its
+            session.
+        authenticated (bool): A MAX login (auth token) is stored
+        logged_in (bool): `connected` and `authenticated`
+        max_user_id (int): The MAX id of the session's account; 0 while no logged-in session is up Example: 123456789.
+        paused (bool): Whether sending from the MAX account is paused: the live session's
+            account, or without a session the one stored at the last login. Read
+            it before `connected`.
+        pause_reason (Union[Unset, str]): Why sending from the MAX account is paused. maxapi gives only `spam` (a limit
+            or restriction error of MAX). Example: spam.
+        upstream_code (Union[Unset, str]): Only while paused; the MAX error code that paused the account Example:
+            error.user.restricted.send.
     """
 
-    authenticated: Union[Unset, bool] = UNSET
-    connected: Union[Unset, bool] = UNSET
-    logged_in: Union[Unset, bool] = UNSET
-    max_user_id: Union[Unset, int] = UNSET
-    success: Union[Unset, bool] = UNSET
+    success: bool
+    connected: bool
+    authenticated: bool
+    logged_in: bool
+    max_user_id: int
+    paused: bool
+    pause_reason: Union[Unset, str] = UNSET
+    upstream_code: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        authenticated = self.authenticated
+        success = self.success
 
         connected = self.connected
+
+        authenticated = self.authenticated
 
         logged_in = self.logged_in
 
         max_user_id = self.max_user_id
 
-        success = self.success
+        paused = self.paused
+
+        pause_reason = self.pause_reason
+
+        upstream_code = self.upstream_code
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if authenticated is not UNSET:
-            field_dict["authenticated"] = authenticated
-        if connected is not UNSET:
-            field_dict["connected"] = connected
-        if logged_in is not UNSET:
-            field_dict["loggedIn"] = logged_in
-        if max_user_id is not UNSET:
-            field_dict["maxUserID"] = max_user_id
-        if success is not UNSET:
-            field_dict["success"] = success
+        field_dict.update(
+            {
+                "success": success,
+                "connected": connected,
+                "authenticated": authenticated,
+                "loggedIn": logged_in,
+                "maxUserID": max_user_id,
+                "paused": paused,
+            }
+        )
+        if pause_reason is not UNSET:
+            field_dict["pauseReason"] = pause_reason
+        if upstream_code is not UNSET:
+            field_dict["upstreamCode"] = upstream_code
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        authenticated = d.pop("authenticated", UNSET)
+        success = d.pop("success")
 
-        connected = d.pop("connected", UNSET)
+        connected = d.pop("connected")
 
-        logged_in = d.pop("loggedIn", UNSET)
+        authenticated = d.pop("authenticated")
 
-        max_user_id = d.pop("maxUserID", UNSET)
+        logged_in = d.pop("loggedIn")
 
-        success = d.pop("success", UNSET)
+        max_user_id = d.pop("maxUserID")
+
+        paused = d.pop("paused")
+
+        pause_reason = d.pop("pauseReason", UNSET)
+
+        upstream_code = d.pop("upstreamCode", UNSET)
 
         status_response = cls(
-            authenticated=authenticated,
+            success=success,
             connected=connected,
+            authenticated=authenticated,
             logged_in=logged_in,
             max_user_id=max_user_id,
-            success=success,
+            paused=paused,
+            pause_reason=pause_reason,
+            upstream_code=upstream_code,
         )
 
         status_response.additional_properties = d

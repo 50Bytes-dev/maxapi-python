@@ -1,70 +1,66 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="AddUserResponse")
 
 
 @_attrs_define
 class AddUserResponse:
-    """Response after creating a new user
-
+    """
     Attributes:
-        id (Union[Unset, str]):  Example: a7e5dd6b-8b3e-4035-ba87-3f96a0e3f5c0.
-        name (Union[Unset, str]):  Example: John Doe.
-        success (Union[Unset, bool]):  Example: True.
-        token (Union[Unset, str]):  Example: abc123def456.
+        success (bool):  Example: True.
+        id (str): The account id, for `/admin/users/{userid}` Example: 6f1c2d4e-8b3e-4035-ba87-3f96a0e3f5c0.
+        token (str): The account token, for the `token` header Example: 0b7a9e31-5d2c-4f6a-9e8b-1c2d3e4f5a6b.
+        name (str):  Example: Shop bot.
     """
 
-    id: Union[Unset, str] = UNSET
-    name: Union[Unset, str] = UNSET
-    success: Union[Unset, bool] = UNSET
-    token: Union[Unset, str] = UNSET
+    success: bool
+    id: str
+    token: str
+    name: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        id = self.id
-
-        name = self.name
-
         success = self.success
+
+        id = self.id
 
         token = self.token
 
+        name = self.name
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if id is not UNSET:
-            field_dict["id"] = id
-        if name is not UNSET:
-            field_dict["name"] = name
-        if success is not UNSET:
-            field_dict["success"] = success
-        if token is not UNSET:
-            field_dict["token"] = token
+        field_dict.update(
+            {
+                "success": success,
+                "id": id,
+                "token": token,
+                "name": name,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        id = d.pop("id", UNSET)
+        success = d.pop("success")
 
-        name = d.pop("name", UNSET)
+        id = d.pop("id")
 
-        success = d.pop("success", UNSET)
+        token = d.pop("token")
 
-        token = d.pop("token", UNSET)
+        name = d.pop("name")
 
         add_user_response = cls(
-            id=id,
-            name=name,
             success=success,
+            id=id,
             token=token,
+            name=name,
         )
 
         add_user_response.additional_properties = d

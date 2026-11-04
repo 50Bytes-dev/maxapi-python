@@ -1,13 +1,11 @@
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, Union
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 if TYPE_CHECKING:
-    from ..models.contacts_response_contacts_item import ContactsResponseContactsItem
+    from ..models.max_contact import MaxContact
 
 
 T = TypeVar("T", bound="ContactsResponse")
@@ -15,63 +13,78 @@ T = TypeVar("T", bound="ContactsResponse")
 
 @_attrs_define
 class ContactsResponse:
-    """Response with list of contacts
-
+    """
     Attributes:
-        contacts (Union[Unset, list['ContactsResponseContactsItem']]):
-        count (Union[Unset, int]):  Example: 42.
-        success (Union[Unset, bool]):  Example: True.
+        success (bool):  Example: True.
+        contacts (Union[None, list['MaxContact']]): The contacts; null when there are none
+        count (int):  Example: 42.
     """
 
-    contacts: Union[Unset, list["ContactsResponseContactsItem"]] = UNSET
-    count: Union[Unset, int] = UNSET
-    success: Union[Unset, bool] = UNSET
+    success: bool
+    contacts: Union[None, list["MaxContact"]]
+    count: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        contacts: Union[Unset, list[dict[str, Any]]] = UNSET
-        if not isinstance(self.contacts, Unset):
+        success = self.success
+
+        contacts: Union[None, list[dict[str, Any]]]
+        if isinstance(self.contacts, list):
             contacts = []
-            for contacts_item_data in self.contacts:
-                contacts_item = contacts_item_data.to_dict()
-                contacts.append(contacts_item)
+            for contacts_type_0_item_data in self.contacts:
+                contacts_type_0_item = contacts_type_0_item_data.to_dict()
+                contacts.append(contacts_type_0_item)
+
+        else:
+            contacts = self.contacts
 
         count = self.count
 
-        success = self.success
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if contacts is not UNSET:
-            field_dict["contacts"] = contacts
-        if count is not UNSET:
-            field_dict["count"] = count
-        if success is not UNSET:
-            field_dict["success"] = success
+        field_dict.update(
+            {
+                "success": success,
+                "contacts": contacts,
+                "count": count,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.contacts_response_contacts_item import ContactsResponseContactsItem
+        from ..models.max_contact import MaxContact
 
         d = dict(src_dict)
-        contacts = []
-        _contacts = d.pop("contacts", UNSET)
-        for contacts_item_data in _contacts or []:
-            contacts_item = ContactsResponseContactsItem.from_dict(contacts_item_data)
+        success = d.pop("success")
 
-            contacts.append(contacts_item)
+        def _parse_contacts(data: object) -> Union[None, list["MaxContact"]]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                contacts_type_0 = []
+                _contacts_type_0 = data
+                for contacts_type_0_item_data in _contacts_type_0:
+                    contacts_type_0_item = MaxContact.from_dict(contacts_type_0_item_data)
 
-        count = d.pop("count", UNSET)
+                    contacts_type_0.append(contacts_type_0_item)
 
-        success = d.pop("success", UNSET)
+                return contacts_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, list["MaxContact"]], data)
+
+        contacts = _parse_contacts(d.pop("contacts"))
+
+        count = d.pop("count")
 
         contacts_response = cls(
+            success=success,
             contacts=contacts,
             count=count,
-            success=success,
         )
 
         contacts_response.additional_properties = d

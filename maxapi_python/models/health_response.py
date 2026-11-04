@@ -1,124 +1,114 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="HealthResponse")
 
 
 @_attrs_define
 class HealthResponse:
-    """Snapshot of process + connection health.
-
+    """
     Attributes:
-        connected_users (Union[Unset, int]):  Example: 42.
-        db_ok (Union[Unset, bool]):  Example: True.
-        goroutines (Union[Unset, int]):  Example: 87.
-        mem_alloc_mb (Union[Unset, int]):  Example: 67.
-        rabbitmq_ok (Union[Unset, bool]):  Example: True.
-        status (Union[Unset, str]):  Example: ok.
-        success (Union[Unset, bool]):  Example: True.
-        timestamp (Union[Unset, int]):  Example: 1700000000.
-        uptime_seconds (Union[Unset, int]):  Example: 12345.
-        version (Union[Unset, str]):  Example: 2.0.0-max.
+        success (bool): false when the database does not answer Example: True.
+        status (str): `ok`, or `degraded` when the database does not answer Example: ok.
+        version (str):  Example: 1.5.0.
+        uptime_seconds (int):  Example: 12345.
+        db_ok (bool):  Example: True.
+        rabbitmq_ok (bool): RabbitMQ is configured and connected
+        connected_users (int): Accounts with a live MAX connection Example: 3.
+        goroutines (int):  Example: 87.
+        mem_alloc_mb (int):  Example: 67.
+        timestamp (int): Unix time in seconds Example: 1793001234.
     """
 
-    connected_users: Union[Unset, int] = UNSET
-    db_ok: Union[Unset, bool] = UNSET
-    goroutines: Union[Unset, int] = UNSET
-    mem_alloc_mb: Union[Unset, int] = UNSET
-    rabbitmq_ok: Union[Unset, bool] = UNSET
-    status: Union[Unset, str] = UNSET
-    success: Union[Unset, bool] = UNSET
-    timestamp: Union[Unset, int] = UNSET
-    uptime_seconds: Union[Unset, int] = UNSET
-    version: Union[Unset, str] = UNSET
+    success: bool
+    status: str
+    version: str
+    uptime_seconds: int
+    db_ok: bool
+    rabbitmq_ok: bool
+    connected_users: int
+    goroutines: int
+    mem_alloc_mb: int
+    timestamp: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        connected_users = self.connected_users
+        success = self.success
+
+        status = self.status
+
+        version = self.version
+
+        uptime_seconds = self.uptime_seconds
 
         db_ok = self.db_ok
+
+        rabbitmq_ok = self.rabbitmq_ok
+
+        connected_users = self.connected_users
 
         goroutines = self.goroutines
 
         mem_alloc_mb = self.mem_alloc_mb
 
-        rabbitmq_ok = self.rabbitmq_ok
-
-        status = self.status
-
-        success = self.success
-
         timestamp = self.timestamp
-
-        uptime_seconds = self.uptime_seconds
-
-        version = self.version
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if connected_users is not UNSET:
-            field_dict["connected_users"] = connected_users
-        if db_ok is not UNSET:
-            field_dict["db_ok"] = db_ok
-        if goroutines is not UNSET:
-            field_dict["goroutines"] = goroutines
-        if mem_alloc_mb is not UNSET:
-            field_dict["mem_alloc_mb"] = mem_alloc_mb
-        if rabbitmq_ok is not UNSET:
-            field_dict["rabbitmq_ok"] = rabbitmq_ok
-        if status is not UNSET:
-            field_dict["status"] = status
-        if success is not UNSET:
-            field_dict["success"] = success
-        if timestamp is not UNSET:
-            field_dict["timestamp"] = timestamp
-        if uptime_seconds is not UNSET:
-            field_dict["uptime_seconds"] = uptime_seconds
-        if version is not UNSET:
-            field_dict["version"] = version
+        field_dict.update(
+            {
+                "success": success,
+                "status": status,
+                "version": version,
+                "uptime_seconds": uptime_seconds,
+                "db_ok": db_ok,
+                "rabbitmq_ok": rabbitmq_ok,
+                "connected_users": connected_users,
+                "goroutines": goroutines,
+                "mem_alloc_mb": mem_alloc_mb,
+                "timestamp": timestamp,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        connected_users = d.pop("connected_users", UNSET)
+        success = d.pop("success")
 
-        db_ok = d.pop("db_ok", UNSET)
+        status = d.pop("status")
 
-        goroutines = d.pop("goroutines", UNSET)
+        version = d.pop("version")
 
-        mem_alloc_mb = d.pop("mem_alloc_mb", UNSET)
+        uptime_seconds = d.pop("uptime_seconds")
 
-        rabbitmq_ok = d.pop("rabbitmq_ok", UNSET)
+        db_ok = d.pop("db_ok")
 
-        status = d.pop("status", UNSET)
+        rabbitmq_ok = d.pop("rabbitmq_ok")
 
-        success = d.pop("success", UNSET)
+        connected_users = d.pop("connected_users")
 
-        timestamp = d.pop("timestamp", UNSET)
+        goroutines = d.pop("goroutines")
 
-        uptime_seconds = d.pop("uptime_seconds", UNSET)
+        mem_alloc_mb = d.pop("mem_alloc_mb")
 
-        version = d.pop("version", UNSET)
+        timestamp = d.pop("timestamp")
 
         health_response = cls(
-            connected_users=connected_users,
+            success=success,
+            status=status,
+            version=version,
+            uptime_seconds=uptime_seconds,
             db_ok=db_ok,
+            rabbitmq_ok=rabbitmq_ok,
+            connected_users=connected_users,
             goroutines=goroutines,
             mem_alloc_mb=mem_alloc_mb,
-            rabbitmq_ok=rabbitmq_ok,
-            status=status,
-            success=success,
             timestamp=timestamp,
-            uptime_seconds=uptime_seconds,
-            version=version,
         )
 
         health_response.additional_properties = d

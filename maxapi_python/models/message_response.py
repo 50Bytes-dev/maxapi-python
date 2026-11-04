@@ -1,52 +1,50 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="MessageResponse")
 
 
 @_attrs_define
 class MessageResponse:
-    """Simple success response with message
-
+    """
     Attributes:
-        message (Union[Unset, str]):  Example: Operation completed.
-        success (Union[Unset, bool]):  Example: True.
+        success (bool):  Example: True.
+        message (str):  Example: User deleted.
     """
 
-    message: Union[Unset, str] = UNSET
-    success: Union[Unset, bool] = UNSET
+    success: bool
+    message: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        message = self.message
-
         success = self.success
+
+        message = self.message
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if message is not UNSET:
-            field_dict["message"] = message
-        if success is not UNSET:
-            field_dict["success"] = success
+        field_dict.update(
+            {
+                "success": success,
+                "message": message,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        message = d.pop("message", UNSET)
+        success = d.pop("success")
 
-        success = d.pop("success", UNSET)
+        message = d.pop("message")
 
         message_response = cls(
-            message=message,
             success=success,
+            message=message,
         )
 
         message_response.additional_properties = d

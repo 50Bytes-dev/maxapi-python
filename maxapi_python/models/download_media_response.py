@@ -1,61 +1,58 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="DownloadMediaResponse")
 
 
 @_attrs_define
 class DownloadMediaResponse:
-    """Response with downloaded media data
-
+    """
     Attributes:
-        data (Union[Unset, str]):  Example: base64_encoded_data.
-        mime_type (Union[Unset, str]):  Example: image/jpeg.
-        success (Union[Unset, bool]):  Example: True.
+        success (bool):  Example: True.
+        data (str): The file in base64 Example: /9j/4AAQSkZJRg....
+        mime_type (str): Sniffed from the bytes Example: image/jpeg.
     """
 
-    data: Union[Unset, str] = UNSET
-    mime_type: Union[Unset, str] = UNSET
-    success: Union[Unset, bool] = UNSET
+    success: bool
+    data: str
+    mime_type: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        success = self.success
+
         data = self.data
 
         mime_type = self.mime_type
 
-        success = self.success
-
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if data is not UNSET:
-            field_dict["data"] = data
-        if mime_type is not UNSET:
-            field_dict["mimeType"] = mime_type
-        if success is not UNSET:
-            field_dict["success"] = success
+        field_dict.update(
+            {
+                "success": success,
+                "data": data,
+                "mimeType": mime_type,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        data = d.pop("data", UNSET)
+        success = d.pop("success")
 
-        mime_type = d.pop("mimeType", UNSET)
+        data = d.pop("data")
 
-        success = d.pop("success", UNSET)
+        mime_type = d.pop("mimeType")
 
         download_media_response = cls(
+            success=success,
             data=data,
             mime_type=mime_type,
-            success=success,
         )
 
         download_media_response.additional_properties = d

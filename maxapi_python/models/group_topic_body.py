@@ -14,7 +14,7 @@ class GroupTopicBody:
     """
     Attributes:
         chat_id (Union[Unset, int]):  Example: 123456789.
-        topic (Union[Unset, str]):  Example: Group description.
+        topic (Union[Unset, str]):  Example: Новости магазина.
     """
 
     chat_id: Union[Unset, int] = UNSET

@@ -14,8 +14,8 @@ class ReactBody:
     """
     Attributes:
         chat_id (Union[Unset, int]):  Example: 123456789.
-        message_id (Union[Unset, str]):  Example: 987654321.
-        reaction (Union[Unset, str]):  Example: 👍.
+        message_id (Union[Unset, str]): The message id as a string Example: 115478893120847321.
+        reaction (Union[Unset, str]): The emoji; empty removes the account's reaction Example: 👍.
     """
 
     chat_id: Union[Unset, int] = UNSET

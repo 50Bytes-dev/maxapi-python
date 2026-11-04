@@ -1,69 +1,65 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="DownloadVideoResponse")
 
 
 @_attrs_define
 class DownloadVideoResponse:
-    """Response with downloaded video data
-
+    """
     Attributes:
-        data (Union[Unset, str]):  Example: base64_encoded_data.
-        mime_type (Union[Unset, str]):  Example: video/mp4.
-        success (Union[Unset, bool]):  Example: True.
-        url (Union[Unset, str]):  Example: https://example.com/video.mp4.
+        success (bool):  Example: True.
+        data (str): The video in base64 Example: AAAAIGZ0eXA....
+        mime_type (str): Sniffed from the bytes Example: video/mp4.
+        url (str): MAX's download URL Example: https://vd.okcdn.ru/?expires=....
     """
 
-    data: Union[Unset, str] = UNSET
-    mime_type: Union[Unset, str] = UNSET
-    success: Union[Unset, bool] = UNSET
-    url: Union[Unset, str] = UNSET
+    success: bool
+    data: str
+    mime_type: str
+    url: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        success = self.success
+
         data = self.data
 
         mime_type = self.mime_type
-
-        success = self.success
 
         url = self.url
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if data is not UNSET:
-            field_dict["data"] = data
-        if mime_type is not UNSET:
-            field_dict["mimeType"] = mime_type
-        if success is not UNSET:
-            field_dict["success"] = success
-        if url is not UNSET:
-            field_dict["url"] = url
+        field_dict.update(
+            {
+                "success": success,
+                "data": data,
+                "mimeType": mime_type,
+                "url": url,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        data = d.pop("data", UNSET)
+        success = d.pop("success")
 
-        mime_type = d.pop("mimeType", UNSET)
+        data = d.pop("data")
 
-        success = d.pop("success", UNSET)
+        mime_type = d.pop("mimeType")
 
-        url = d.pop("url", UNSET)
+        url = d.pop("url")
 
         download_video_response = cls(
+            success=success,
             data=data,
             mime_type=mime_type,
-            success=success,
             url=url,
         )
 

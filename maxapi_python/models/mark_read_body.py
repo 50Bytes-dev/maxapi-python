@@ -1,10 +1,8 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union
+from typing import Any, TypeVar
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
-
-from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="MarkReadBody")
 
@@ -13,12 +11,12 @@ T = TypeVar("T", bound="MarkReadBody")
 class MarkReadBody:
     """
     Attributes:
-        chat_id (Union[Unset, int]):  Example: 123456789.
-        message_id (Union[Unset, int]):  Example: 987654321.
+        chat_id (int):  Example: 123456789.
+        message_id (int):  Example: 115478893120847321.
     """
 
-    chat_id: Union[Unset, int] = UNSET
-    message_id: Union[Unset, int] = UNSET
+    chat_id: int
+    message_id: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -28,20 +26,21 @@ class MarkReadBody:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if chat_id is not UNSET:
-            field_dict["chatId"] = chat_id
-        if message_id is not UNSET:
-            field_dict["messageId"] = message_id
+        field_dict.update(
+            {
+                "chatId": chat_id,
+                "messageId": message_id,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        chat_id = d.pop("chatId", UNSET)
+        chat_id = d.pop("chatId")
 
-        message_id = d.pop("messageId", UNSET)
+        message_id = d.pop("messageId")
 
         mark_read_body = cls(
             chat_id=chat_id,

@@ -13,8 +13,8 @@ T = TypeVar("T", bound="CreateGroupBody")
 class CreateGroupBody:
     """
     Attributes:
-        name (Union[Unset, str]):  Example: My Group.
-        participants (Union[Unset, list[int]]):
+        name (Union[Unset, str]):  Example: Покупатели.
+        participants (Union[Unset, list[int]]): MAX user ids Example: [987654321].
     """
 
     name: Union[Unset, str] = UNSET

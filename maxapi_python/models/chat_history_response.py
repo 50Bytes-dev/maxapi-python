@@ -1,13 +1,11 @@
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, Union
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 if TYPE_CHECKING:
-    from ..models.chat_history_response_messages_item import ChatHistoryResponseMessagesItem
+    from ..models.max_message import MaxMessage
 
 
 T = TypeVar("T", bound="ChatHistoryResponse")
@@ -15,54 +13,70 @@ T = TypeVar("T", bound="ChatHistoryResponse")
 
 @_attrs_define
 class ChatHistoryResponse:
-    """Response with chat history messages
-
+    """
     Attributes:
-        messages (Union[Unset, list['ChatHistoryResponseMessagesItem']]):
-        success (Union[Unset, bool]):  Example: True.
+        success (bool):  Example: True.
+        messages (Union[None, list['MaxMessage']]): The messages; null when there are none
     """
 
-    messages: Union[Unset, list["ChatHistoryResponseMessagesItem"]] = UNSET
-    success: Union[Unset, bool] = UNSET
+    success: bool
+    messages: Union[None, list["MaxMessage"]]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        messages: Union[Unset, list[dict[str, Any]]] = UNSET
-        if not isinstance(self.messages, Unset):
-            messages = []
-            for messages_item_data in self.messages:
-                messages_item = messages_item_data.to_dict()
-                messages.append(messages_item)
-
         success = self.success
+
+        messages: Union[None, list[dict[str, Any]]]
+        if isinstance(self.messages, list):
+            messages = []
+            for messages_type_0_item_data in self.messages:
+                messages_type_0_item = messages_type_0_item_data.to_dict()
+                messages.append(messages_type_0_item)
+
+        else:
+            messages = self.messages
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if messages is not UNSET:
-            field_dict["messages"] = messages
-        if success is not UNSET:
-            field_dict["success"] = success
+        field_dict.update(
+            {
+                "success": success,
+                "messages": messages,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.chat_history_response_messages_item import ChatHistoryResponseMessagesItem
+        from ..models.max_message import MaxMessage
 
         d = dict(src_dict)
-        messages = []
-        _messages = d.pop("messages", UNSET)
-        for messages_item_data in _messages or []:
-            messages_item = ChatHistoryResponseMessagesItem.from_dict(messages_item_data)
+        success = d.pop("success")
 
-            messages.append(messages_item)
+        def _parse_messages(data: object) -> Union[None, list["MaxMessage"]]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                messages_type_0 = []
+                _messages_type_0 = data
+                for messages_type_0_item_data in _messages_type_0:
+                    messages_type_0_item = MaxMessage.from_dict(messages_type_0_item_data)
 
-        success = d.pop("success", UNSET)
+                    messages_type_0.append(messages_type_0_item)
+
+                return messages_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, list["MaxMessage"]], data)
+
+        messages = _parse_messages(d.pop("messages"))
 
         chat_history_response = cls(
-            messages=messages,
             success=success,
+            messages=messages,
         )
 
         chat_history_response.additional_properties = d

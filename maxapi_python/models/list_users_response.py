@@ -1,13 +1,11 @@
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, TypeVar, Union
+from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-from ..types import UNSET, Unset
-
 if TYPE_CHECKING:
-    from ..models.user_response import UserResponse
+    from ..models.user_summary import UserSummary
 
 
 T = TypeVar("T", bound="ListUsersResponse")
@@ -15,54 +13,70 @@ T = TypeVar("T", bound="ListUsersResponse")
 
 @_attrs_define
 class ListUsersResponse:
-    """Response with list of users
-
+    """
     Attributes:
-        data (Union[Unset, list['UserResponse']]):
-        success (Union[Unset, bool]):  Example: True.
+        success (bool):  Example: True.
+        data (Union[None, list['UserSummary']]): The accounts; null when there are none
     """
 
-    data: Union[Unset, list["UserResponse"]] = UNSET
-    success: Union[Unset, bool] = UNSET
+    success: bool
+    data: Union[None, list["UserSummary"]]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        data: Union[Unset, list[dict[str, Any]]] = UNSET
-        if not isinstance(self.data, Unset):
-            data = []
-            for data_item_data in self.data:
-                data_item = data_item_data.to_dict()
-                data.append(data_item)
-
         success = self.success
+
+        data: Union[None, list[dict[str, Any]]]
+        if isinstance(self.data, list):
+            data = []
+            for data_type_0_item_data in self.data:
+                data_type_0_item = data_type_0_item_data.to_dict()
+                data.append(data_type_0_item)
+
+        else:
+            data = self.data
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if data is not UNSET:
-            field_dict["data"] = data
-        if success is not UNSET:
-            field_dict["success"] = success
+        field_dict.update(
+            {
+                "success": success,
+                "data": data,
+            }
+        )
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
-        from ..models.user_response import UserResponse
+        from ..models.user_summary import UserSummary
 
         d = dict(src_dict)
-        data = []
-        _data = d.pop("data", UNSET)
-        for data_item_data in _data or []:
-            data_item = UserResponse.from_dict(data_item_data)
+        success = d.pop("success")
 
-            data.append(data_item)
+        def _parse_data(data: object) -> Union[None, list["UserSummary"]]:
+            if data is None:
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                data_type_0 = []
+                _data_type_0 = data
+                for data_type_0_item_data in _data_type_0:
+                    data_type_0_item = UserSummary.from_dict(data_type_0_item_data)
 
-        success = d.pop("success", UNSET)
+                    data_type_0.append(data_type_0_item)
+
+                return data_type_0
+            except:  # noqa: E722
+                pass
+            return cast(Union[None, list["UserSummary"]], data)
+
+        data = _parse_data(d.pop("data"))
 
         list_users_response = cls(
-            data=data,
             success=success,
+            data=data,
         )
 
         list_users_response.additional_properties = d

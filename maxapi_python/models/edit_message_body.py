@@ -13,13 +13,13 @@ T = TypeVar("T", bound="EditMessageBody")
 class EditMessageBody:
     """
     Attributes:
-        chat_id (Union[Unset, int]):  Example: 123456789.
-        message_id (Union[Unset, int]):  Example: 987654321.
-        text (Union[Unset, str]):  Example: Updated message.
+        chat_id (int):  Example: 123456789.
+        message_id (int):  Example: 115478893120847321.
+        text (Union[Unset, str]):  Example: Исправленный текст.
     """
 
-    chat_id: Union[Unset, int] = UNSET
-    message_id: Union[Unset, int] = UNSET
+    chat_id: int
+    message_id: int
     text: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -32,11 +32,12 @@ class EditMessageBody:
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
-        field_dict.update({})
-        if chat_id is not UNSET:
-            field_dict["chatId"] = chat_id
-        if message_id is not UNSET:
-            field_dict["messageId"] = message_id
+        field_dict.update(
+            {
+                "chatId": chat_id,
+                "messageId": message_id,
+            }
+        )
         if text is not UNSET:
             field_dict["text"] = text
 
@@ -45,9 +46,9 @@ class EditMessageBody:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        chat_id = d.pop("chatId", UNSET)
+        chat_id = d.pop("chatId")
 
-        message_id = d.pop("messageId", UNSET)
+        message_id = d.pop("messageId")
 
         text = d.pop("text", UNSET)
 

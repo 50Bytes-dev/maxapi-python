@@ -14,8 +14,8 @@ class ChatHistoryBody:
     """
     Attributes:
         chat_id (Union[Unset, int]):  Example: 123456789.
-        count (Union[Unset, int]):  Example: 50.
-        from_time (Union[Unset, int]):
+        count (Union[Unset, int]): How many messages before `fromTime`; 0 means 50 Example: 50.
+        from_time (Union[Unset, int]): Unix time in milliseconds; 0 means now
     """
 
     chat_id: Union[Unset, int] = UNSET

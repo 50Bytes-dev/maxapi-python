@@ -13,48 +13,50 @@ T = TypeVar("T", bound="AddUserBody")
 class AddUserBody:
     """
     Attributes:
-        events (Union[Unset, str]):  Example: All.
-        name (Union[Unset, str]):  Example: John Doe.
-        webhook (Union[Unset, str]):  Example: https://example.com/webhook.
+        name (Union[Unset, str]): Account name; shown in the webhook's `instanceName`. Not validated. Example: Shop bot.
+        webhook (Union[Unset, str]): Where events go, used exactly as given. Empty means no events. Example:
+            https://example.com/webhook.
+        events (Union[Unset, str]): Comma-separated event subscription of `EventType` names, stored as
+            given. `POST /session/connect` overwrites it with `subscribe`. Example: Sync,QRAuthorized,AuthExpired,LoggedOut.
     """
 
-    events: Union[Unset, str] = UNSET
     name: Union[Unset, str] = UNSET
     webhook: Union[Unset, str] = UNSET
+    events: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        events = self.events
-
         name = self.name
 
         webhook = self.webhook
 
+        events = self.events
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if events is not UNSET:
-            field_dict["events"] = events
         if name is not UNSET:
             field_dict["name"] = name
         if webhook is not UNSET:
             field_dict["webhook"] = webhook
+        if events is not UNSET:
+            field_dict["events"] = events
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        events = d.pop("events", UNSET)
-
         name = d.pop("name", UNSET)
 
         webhook = d.pop("webhook", UNSET)
 
+        events = d.pop("events", UNSET)
+
         add_user_body = cls(
-            events=events,
             name=name,
             webhook=webhook,
+            events=events,
         )
 
         add_user_body.additional_properties = d

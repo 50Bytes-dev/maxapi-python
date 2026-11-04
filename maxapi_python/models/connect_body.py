@@ -1,9 +1,10 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar, Union, cast
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.event_type import EventType
 from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="ConnectBody")
@@ -11,43 +12,56 @@ T = TypeVar("T", bound="ConnectBody")
 
 @_attrs_define
 class ConnectBody:
-    """
+    """The body is required; `{}` is enough.
+
     Attributes:
-        immediate (Union[Unset, bool]):
-        subscribe (Union[Unset, list[str]]):  Example: ['Message', 'ReadReceipt'].
+        subscribe (Union[Unset, list[EventType]]): The event subscription; overwrites the stored one, also when already
+            connected. Duplicates are kept once. Example: ['Sync', 'QRAuthorized', 'AuthExpired', 'LoggedOut',
+            'Disconnected', 'Reconnecting', 'QRGenerated', 'QRScanned', 'QRExpired'].
+        immediate (Union[Unset, bool]): false (default): with a stored login and no session, wait 5 s for the
+            session and answer 500 "failed to connect" if it is not up. true:
+            answer at once; the outcome arrives as `Sync` or `AuthExpired`. Example: True.
     """
 
+    subscribe: Union[Unset, list[EventType]] = UNSET
     immediate: Union[Unset, bool] = UNSET
-    subscribe: Union[Unset, list[str]] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
-        immediate = self.immediate
-
         subscribe: Union[Unset, list[str]] = UNSET
         if not isinstance(self.subscribe, Unset):
-            subscribe = self.subscribe
+            subscribe = []
+            for subscribe_item_data in self.subscribe:
+                subscribe_item = subscribe_item_data.value
+                subscribe.append(subscribe_item)
+
+        immediate = self.immediate
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
-        if immediate is not UNSET:
-            field_dict["immediate"] = immediate
         if subscribe is not UNSET:
             field_dict["subscribe"] = subscribe
+        if immediate is not UNSET:
+            field_dict["immediate"] = immediate
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        subscribe = []
+        _subscribe = d.pop("subscribe", UNSET)
+        for subscribe_item_data in _subscribe or []:
+            subscribe_item = EventType(subscribe_item_data)
+
+            subscribe.append(subscribe_item)
+
         immediate = d.pop("immediate", UNSET)
 
-        subscribe = cast(list[str], d.pop("subscribe", UNSET))
-
         connect_body = cls(
-            immediate=immediate,
             subscribe=subscribe,
+            immediate=immediate,
         )
 
         connect_body.additional_properties = d

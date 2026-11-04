@@ -13,7 +13,7 @@ T = TypeVar("T", bound="WebhookBody")
 class WebhookBody:
     """
     Attributes:
-        webhook (Union[Unset, str]):  Example: https://example.com/webhook.
+        webhook (Union[Unset, str]): The URL; "" sends no events Example: https://example.com/webhook.
     """
 
     webhook: Union[Unset, str] = UNSET
