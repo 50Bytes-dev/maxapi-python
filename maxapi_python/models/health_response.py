@@ -13,7 +13,7 @@ class HealthResponse:
     Attributes:
         success (bool): false when the database does not answer Example: True.
         status (str): `ok`, or `degraded` when the database does not answer Example: ok.
-        version (str):  Example: 1.5.0.
+        version (str):  Example: 1.5.1.
         uptime_seconds (int):  Example: 12345.
         db_ok (bool):  Example: True.
         rabbitmq_ok (bool): RabbitMQ is configured and connected

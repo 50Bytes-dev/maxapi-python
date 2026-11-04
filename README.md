@@ -85,6 +85,8 @@ arguments of both clients; `httpx_args` passes anything else to the underlying `
 openapi-python-client locked in `uv.lock` (0.26.1; versions 0.29 and newer emit `typing.Self`, which needs
 Python 3.11). Bump `version` in `pyproject.toml` with the schema's `info.version`.
 
+`templates/client.py.jinja` overrides the generator's client template in one respect: `token` and the headers (which carry the token once a request is made) are left out of the clients' `repr`, so a client in a log or a traceback does not show the token. When the generator is upgraded, copy its new `client.py.jinja` and redo that change.
+
 ```shell
 uv sync && ./generate.sh && uv run ruff check maxapi_python && uv run ruff format --check maxapi_python
 ```
