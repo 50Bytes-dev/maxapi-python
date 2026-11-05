@@ -16,9 +16,10 @@ class CheckUsersResult:
         phone (str):  Example: 79001234567.
         exists (bool): MAX has a user with the number Example: True.
         max_user_id (int): The user's MAX id; 0 when not found Example: 987654321.
-        name (Union[Unset, str]): The user's first name in MAX, when found Example: Иван.
+        name (Union[Unset, str]): The user's name in MAX, when found and known Example: Иван.
         error (Union[Unset, str]): Present when the lookup itself failed; `exists` false then does not mean that MAX has
             no such user Example: Timeout Error: Request timed out.
+        upstream_code (Union[Unset, str]): MAX's code, when MAX answered the failed lookup with an error
     """
 
     phone: str
@@ -26,6 +27,7 @@ class CheckUsersResult:
     max_user_id: int
     name: Union[Unset, str] = UNSET
     error: Union[Unset, str] = UNSET
+    upstream_code: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -38,6 +40,8 @@ class CheckUsersResult:
         name = self.name
 
         error = self.error
+
+        upstream_code = self.upstream_code
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -52,6 +56,8 @@ class CheckUsersResult:
             field_dict["name"] = name
         if error is not UNSET:
             field_dict["error"] = error
+        if upstream_code is not UNSET:
+            field_dict["upstreamCode"] = upstream_code
 
         return field_dict
 
@@ -68,12 +74,15 @@ class CheckUsersResult:
 
         error = d.pop("error", UNSET)
 
+        upstream_code = d.pop("upstreamCode", UNSET)
+
         check_users_result = cls(
             phone=phone,
             exists=exists,
             max_user_id=max_user_id,
             name=name,
             error=error,
+            upstream_code=upstream_code,
         )
 
         check_users_result.additional_properties = d

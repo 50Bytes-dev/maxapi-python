@@ -1,6 +1,7 @@
 # maxapi-python
 A client library for [maxapi](https://github.com/50Bytes-dev/maxapi), the MAX Messenger REST gateway.
-Generated from maxapi's OpenAPI schema (`static/api/spec.yml`); version 4.0.0 matches the schema of maxapi 1.5.0.
+Generated from maxapi's OpenAPI schema (`static/api/spec.yml`); version 5.0.0 matches the schema of maxapi 2.0.0
+(what changed and how to move to it: maxapi's `API.md`, "What changed in 2.0.0").
 
 Requires Python 3.9 or newer.
 
@@ -36,31 +37,42 @@ public = Client(base_url="http://maxapi:5555")  # GET /health only
 
 ## Calls
 Every operation is a module named after its `operationId`, under the package of its tag
-(`admin`, `session`, `chat`, `user`, `group`, `webhook`, `health`), with four functions:
+(`admin`, `session`, `chat`, `media`, `user`, `group`, `webhook`, `health`), with four functions:
 
 1. `sync`: blocking; returns the parsed body, or `None` for a status the schema does not list;
 1. `sync_detailed`: blocking; returns a `Response` with `status_code`, `content`, `headers` and `parsed`;
 1. `asyncio` and `asyncio_detailed`: the same, async.
 
-Errors are not raised: a documented error status returns `ErrorResponse` (`success`, `error`, and where
-maxapi sends them `code`, `upstream_code`, `paused`, `pause_reason`). Use `sync_detailed` when the HTTP
-status matters, since most maxapi errors carry no `code`.
+Errors are not raised: a documented error status returns `ErrorResponse` (`success`, `error`, `code`, and
+where maxapi sends them `upstream_code`, `paused`, `pause_reason`). Branch on `code`.
+
+maxapi does not pace sends: it sends each call at once, so pace an account's sends in your project. A pause
+of the MAX account refuses what the account does (sends, deletes, edits, uploads, phone lookups); reads go on.
 
 ```python
 from maxapi_python.api.admin import add_user
-from maxapi_python.api.chat import send_text
+from maxapi_python.api.chat import list_chats, send_text
+from maxapi_python.api.media import upload_photo
 from maxapi_python.api.session import get_status
-from maxapi_python.models import AddUserBody, ErrorResponse, SendTextBody, SendTextResponse
+from maxapi_python.models import (
+    AddUserBody, ChatKind, ErrorResponse, PhotoBody, PhotoResponse, SendTextBody, SendTextResponse,
+)
 
 created = add_user.sync(client=admin, body=AddUserBody(name="Shop bot", webhook="https://example.com/webhook"))
 
 status = get_status.sync(client=account)
 if status is not None and status.connected and not status.paused:
-    response = send_text.sync_detailed(client=account, body=SendTextBody(phone="79001234567", text="Hello"))
-    if isinstance(response.parsed, SendTextResponse):
-        print(response.parsed.message_id)
-    elif isinstance(response.parsed, ErrorResponse):
-        print(response.status_code, response.parsed.code, response.parsed.upstream_code)
+    chats = list_chats.sync(client=account, type_=[ChatKind.CHAT])
+    photo = upload_photo.sync(client=account, body=PhotoBody(url="https://cdn.example.com/p/1.jpg"))
+    if isinstance(photo, PhotoResponse):
+        response = send_text.sync_detailed(
+            client=account,
+            body=SendTextBody(chat_id=chats.items[0].chat_id, text="Новинка", attachments=[photo.attachment], ref="post-1"),
+        )
+        if isinstance(response.parsed, SendTextResponse):
+            print(response.parsed.message_id)
+        elif isinstance(response.parsed, ErrorResponse):
+            print(response.status_code, response.parsed.code, response.parsed.upstream_code, response.parsed.paused)
 ```
 
 ## Webhook events
@@ -69,9 +81,15 @@ maxapi posts events to the account's webhook. Each event has a model (`SyncEvent
 model does not name stay in `additional_properties`.
 
 ```python
-from maxapi_python.models import AuthExpiredEvent, SyncEvent
+from maxapi_python.models import AuthExpiredEvent, MessageOutcomeEvent, PausedEvent, ResumedEvent, SyncEvent
 
-EVENTS = {"Sync": SyncEvent, "AuthExpired": AuthExpiredEvent}
+EVENTS = {
+    "Sync": SyncEvent,
+    "AuthExpired": AuthExpiredEvent,
+    "Paused": PausedEvent,
+    "Resumed": ResumedEvent,
+    "MessageOutcome": MessageOutcomeEvent,
+}
 event = EVENTS[body["type"]].from_dict(body)
 ```
 

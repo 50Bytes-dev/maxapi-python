@@ -11,30 +11,33 @@ T = TypeVar("T", bound="ErrorResponse")
 
 @_attrs_define
 class ErrorResponse:
-    """The error body of every call. Most errors carry no `code`: only
-    `POST /chat/send/text`, `POST /session/resume` and
-    `GET /admin/users/{userid}` send one. Only `POST /chat/send/text` adds
-    `upstreamCode` and the account's pause.
+    """The error body of every call. On every account call that reaches MAX it
+    carries a machine `code`; the codes are listed in API.md, "Codes", each
+    with its HTTP status. `upstreamCode` is MAX's own code, present whenever
+    MAX answered with an error. A failure because of the account's pause
+    carries `paused` and `pauseReason`.
 
         Attributes:
             success (bool):
-            error (str): A human-readable text, often with MAX's error inside; it may change. Do not branch on it. Example:
-                send rejected: Refused: Refused (chat.denied).
-            code (Union[Unset, str]): The machine code, when the answer has one. `POST /chat/send/text`:
-                the delivery outcome codes `not_connected`, `invalid_target`,
-                `address_not_found`, `lookup_failed`, `send_rejected`, `send_failed`
-                (`address_refused` is reserved and not sent yet), and
-                `INVALID_INPUT`. `POST /session/resume`: `INVALID_INPUT`,
-                `INTERNAL_ERROR`. `GET /admin/users/{userid}`: `NOT_FOUND`,
-                `INTERNAL_ERROR`. Treat an unknown code as a failure of the call. Example: send_rejected.
-            upstream_code (Union[Unset, str]): The error code MAX itself answered with (`chat.denied`, `not.found`,
-                `error.user.restricted.send`). Absent when MAX did not answer with an
-                error: a timeout, a lost session, or a refusal by the gateway itself. Example: chat.denied.
-            paused (Union[Unset, bool]): Present (true) only when sending from the MAX account is paused: by
-                this refusal, or before it. Stop sending from every connection of
-                this MAX account until `POST /session/resume`.
-            pause_reason (Union[Unset, str]): Why sending from the MAX account is paused. maxapi gives only `spam` (a limit
-                or restriction error of MAX). Example: spam.
+            error (str): A human-readable text; it may change. Do not branch on it. Example: MAX refused the message.
+            code (Union[Unset, str]): The machine code. Delivery (a send, a delete): `not_connected`,
+                `invalid_target`, `address_not_found`, `address_refused`,
+                `lookup_failed`, `send_rejected`, `message_rejected`,
+                `attachment_rejected`, `send_failed`. Other calls that reach MAX:
+                `page_paused`, `upstream_error`, `not_connected`. Media:
+                `invalid_image`, `fetch_failed`, `upload_failed`. Generic:
+                `INVALID_INPUT`, `INTERNAL_ERROR`, `NOT_FOUND`. Treat an unknown code
+                as a failure of the call. Example: send_rejected.
+            upstream_code (Union[Unset, str]): MAX's own error code (`chat.denied`, `not.found`,
+                `error.user.restricted.send`), present whenever MAX answered with
+                an error. Absent when no MAX call was made (a pause that was
+                already set) or MAX did not answer. Example: chat.denied.
+            paused (Union[Unset, bool]): Present (true) only when the MAX account is paused: by this refusal,
+                or before it. Until `POST /session/resume`, every gateway account of
+                this MAX account is refused what acts in MAX (sends, deletes, edits,
+                reactions, uploads, phone lookups, group changes); reads go on.
+            pause_reason (Union[Unset, str]): Why the MAX account is paused. maxapi gives only `spam` (a limit or
+                restriction error of MAX). Example: spam.
     """
 
     success: bool

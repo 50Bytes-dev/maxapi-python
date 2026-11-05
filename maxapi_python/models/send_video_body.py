@@ -19,7 +19,11 @@ class SendVideoBody:
             data:video/mp4;base64,AAAAIGZ0eXA....
         file_name (Union[Unset, str]): Default `video.mp4` Example: video.mp4.
         caption (Union[Unset, str]):  Example: Обзор.
-        notify (Union[Unset, bool]):  Example: True.
+        notify (Union[Unset, bool]): Whether MAX notifies the recipients; true when left out Default: True. Example:
+            True.
+        ref (Union[Unset, str]): The caller's own id of the message, at most 128 bytes. The message's
+            cid is made from it, the same for every send with this ref, and a
+            `send_failed` with it is confirmed by `MessageOutcome`. Example: post-42-chat-7.
     """
 
     chat_id: Union[Unset, int] = UNSET
@@ -27,7 +31,8 @@ class SendVideoBody:
     video: Union[Unset, str] = UNSET
     file_name: Union[Unset, str] = UNSET
     caption: Union[Unset, str] = UNSET
-    notify: Union[Unset, bool] = UNSET
+    notify: Union[Unset, bool] = True
+    ref: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -42,6 +47,8 @@ class SendVideoBody:
         caption = self.caption
 
         notify = self.notify
+
+        ref = self.ref
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -58,6 +65,8 @@ class SendVideoBody:
             field_dict["caption"] = caption
         if notify is not UNSET:
             field_dict["notify"] = notify
+        if ref is not UNSET:
+            field_dict["ref"] = ref
 
         return field_dict
 
@@ -76,6 +85,8 @@ class SendVideoBody:
 
         notify = d.pop("notify", UNSET)
 
+        ref = d.pop("ref", UNSET)
+
         send_video_body = cls(
             chat_id=chat_id,
             phone=phone,
@@ -83,6 +94,7 @@ class SendVideoBody:
             file_name=file_name,
             caption=caption,
             notify=notify,
+            ref=ref,
         )
 
         send_video_body.additional_properties = d

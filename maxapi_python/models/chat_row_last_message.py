@@ -4,14 +4,14 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-T = TypeVar("T", bound="MaxChatParticipants")
+T = TypeVar("T", bound="ChatRowLastMessage")
 
 
 @_attrs_define
-class MaxChatParticipants:
-    """MAX user id → MAX's value for the member"""
+class ChatRowLastMessage:
+    """With `include=lastMessage` only. The last message as MAX gives it, its text included."""
 
-    additional_properties: dict[str, int] = _attrs_field(init=False, factory=dict)
+    additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         field_dict: dict[str, Any] = {}
@@ -22,19 +22,19 @@ class MaxChatParticipants:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
-        max_chat_participants = cls()
+        chat_row_last_message = cls()
 
-        max_chat_participants.additional_properties = d
-        return max_chat_participants
+        chat_row_last_message.additional_properties = d
+        return chat_row_last_message
 
     @property
     def additional_keys(self) -> list[str]:
         return list(self.additional_properties.keys())
 
-    def __getitem__(self, key: str) -> int:
+    def __getitem__(self, key: str) -> Any:
         return self.additional_properties[key]
 
-    def __setitem__(self, key: str, value: int) -> None:
+    def __setitem__(self, key: str, value: Any) -> None:
         self.additional_properties[key] = value
 
     def __delitem__(self, key: str) -> None:

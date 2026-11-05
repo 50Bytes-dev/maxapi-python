@@ -14,6 +14,8 @@ class EventType(str, Enum):
     MESSAGE = "Message"
     MESSAGEDELETE = "MessageDelete"
     MESSAGEEDIT = "MessageEdit"
+    MESSAGEOUTCOME = "MessageOutcome"
+    PAUSED = "Paused"
     PRESENCEUPDATE = "PresenceUpdate"
     QRAUTHORIZED = "QRAuthorized"
     QREXPIRED = "QRExpired"
@@ -23,6 +25,7 @@ class EventType(str, Enum):
     READRECEIPT = "ReadReceipt"
     RECONNECTEXHAUSTED = "ReconnectExhausted"
     RECONNECTING = "Reconnecting"
+    RESUMED = "Resumed"
     SYNC = "Sync"
     TYPING = "Typing"
 

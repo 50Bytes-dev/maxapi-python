@@ -19,8 +19,8 @@ class ConnectResponse:
         events (str): The stored subscription, comma-separated Example: Sync,QRAuthorized,AuthExpired,LoggedOut.
         already_connected (Union[Unset, bool]): Present (true) only when the session was already up
         paused (Union[Unset, bool]): Whether sending from the MAX account is paused; only with `alreadyConnected`
-        pause_reason (Union[Unset, str]): Why sending from the MAX account is paused. maxapi gives only `spam` (a limit
-            or restriction error of MAX). Example: spam.
+        pause_reason (Union[Unset, str]): Why the MAX account is paused. maxapi gives only `spam` (a limit or
+            restriction error of MAX). Example: spam.
         upstream_code (Union[Unset, str]): Only while paused (and `alreadyConnected`); the MAX error code that paused
             the account Example: error.user.restricted.send.
     """

@@ -48,10 +48,20 @@ def _parse_response(
 
         return response_401
 
+    if response.status_code == 409:
+        response_409 = ErrorResponse.from_dict(response.json())
+
+        return response_409
+
     if response.status_code == 500:
         response_500 = ErrorResponse.from_dict(response.json())
 
         return response_500
+
+    if response.status_code == 502:
+        response_502 = ErrorResponse.from_dict(response.json())
+
+        return response_502
 
     if response.status_code == 503:
         response_503 = ErrorResponse.from_dict(response.json())
@@ -82,7 +92,10 @@ def sync_detailed(
 ) -> Response[Union[ErrorResponse, UserInfoResponse]]:
     """Get MAX users by id
 
-     MAX users by their ids, from the session's cache or from MAX.
+     MAX users by their ids (1 to 100), from the session's memory or from MAX
+    (CONTACT_INFO, opcode 32): names, photo, and `phone` when MAX shows it
+    to the account. This replaces the `contacts` that `Sync` carried before
+    2.0.0. Answers within 8 s.
 
     Args:
         body (UserInfoBody):
@@ -113,7 +126,10 @@ def sync(
 ) -> Optional[Union[ErrorResponse, UserInfoResponse]]:
     """Get MAX users by id
 
-     MAX users by their ids, from the session's cache or from MAX.
+     MAX users by their ids (1 to 100), from the session's memory or from MAX
+    (CONTACT_INFO, opcode 32): names, photo, and `phone` when MAX shows it
+    to the account. This replaces the `contacts` that `Sync` carried before
+    2.0.0. Answers within 8 s.
 
     Args:
         body (UserInfoBody):
@@ -139,7 +155,10 @@ async def asyncio_detailed(
 ) -> Response[Union[ErrorResponse, UserInfoResponse]]:
     """Get MAX users by id
 
-     MAX users by their ids, from the session's cache or from MAX.
+     MAX users by their ids (1 to 100), from the session's memory or from MAX
+    (CONTACT_INFO, opcode 32): names, photo, and `phone` when MAX shows it
+    to the account. This replaces the `contacts` that `Sync` carried before
+    2.0.0. Answers within 8 s.
 
     Args:
         body (UserInfoBody):
@@ -168,7 +187,10 @@ async def asyncio(
 ) -> Optional[Union[ErrorResponse, UserInfoResponse]]:
     """Get MAX users by id
 
-     MAX users by their ids, from the session's cache or from MAX.
+     MAX users by their ids (1 to 100), from the session's memory or from MAX
+    (CONTACT_INFO, opcode 32): names, photo, and `phone` when MAX shows it
+    to the account. This replaces the `contacts` that `Sync` carried before
+    2.0.0. Answers within 8 s.
 
     Args:
         body (UserInfoBody):

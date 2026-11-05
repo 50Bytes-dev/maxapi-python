@@ -60,10 +60,10 @@ def sync_detailed(
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
     """Log out of MAX and delete the account
 
-     Logs the session out in MAX (when it is up), stops the reconnects and
-    deletes the gateway account with its MAX login and phone lookup cache;
-    the token answers 401 from now on. No webhook is sent for it. A pause of
-    its MAX account stays. No body is read.
+     Ends the MAX session (opcode 20) and erases the stored MAX login. The
+    gateway account stays, with its token, webhook and settings: a new
+    login is a QR login through `POST /session/connect`. Deleting the
+    account is `DELETE /admin/users/{userid}`. No webhook is sent.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -88,10 +88,10 @@ def sync(
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
     """Log out of MAX and delete the account
 
-     Logs the session out in MAX (when it is up), stops the reconnects and
-    deletes the gateway account with its MAX login and phone lookup cache;
-    the token answers 401 from now on. No webhook is sent for it. A pause of
-    its MAX account stays. No body is read.
+     Ends the MAX session (opcode 20) and erases the stored MAX login. The
+    gateway account stays, with its token, webhook and settings: a new
+    login is a QR login through `POST /session/connect`. Deleting the
+    account is `DELETE /admin/users/{userid}`. No webhook is sent.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -112,10 +112,10 @@ async def asyncio_detailed(
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
     """Log out of MAX and delete the account
 
-     Logs the session out in MAX (when it is up), stops the reconnects and
-    deletes the gateway account with its MAX login and phone lookup cache;
-    the token answers 401 from now on. No webhook is sent for it. A pause of
-    its MAX account stays. No body is read.
+     Ends the MAX session (opcode 20) and erases the stored MAX login. The
+    gateway account stays, with its token, webhook and settings: a new
+    login is a QR login through `POST /session/connect`. Deleting the
+    account is `DELETE /admin/users/{userid}`. No webhook is sent.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -138,10 +138,10 @@ async def asyncio(
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
     """Log out of MAX and delete the account
 
-     Logs the session out in MAX (when it is up), stops the reconnects and
-    deletes the gateway account with its MAX login and phone lookup cache;
-    the token answers 401 from now on. No webhook is sent for it. A pause of
-    its MAX account stays. No body is read.
+     Ends the MAX session (opcode 20) and erases the stored MAX login. The
+    gateway account stays, with its token, webhook and settings: a new
+    login is a QR login through `POST /session/connect`. Deleting the
+    account is `DELETE /admin/users/{userid}`. No webhook is sent.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

@@ -12,11 +12,12 @@ class MarkReadBody:
     """
     Attributes:
         chat_id (int):  Example: 123456789.
-        message_id (int):  Example: 115478893120847321.
+        message_id (str): A MAX message id. MAX's ids are above 2^53, so they travel as strings; a JSON number is read
+            too. Example: 115478893120847321.
     """
 
     chat_id: int
-    message_id: int
+    message_id: str
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:

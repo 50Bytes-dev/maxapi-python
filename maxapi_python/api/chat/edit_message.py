@@ -48,10 +48,25 @@ def _parse_response(
 
         return response_401
 
+    if response.status_code == 409:
+        response_409 = ErrorResponse.from_dict(response.json())
+
+        return response_409
+
+    if response.status_code == 422:
+        response_422 = ErrorResponse.from_dict(response.json())
+
+        return response_422
+
     if response.status_code == 500:
         response_500 = ErrorResponse.from_dict(response.json())
 
         return response_500
+
+    if response.status_code == 502:
+        response_502 = ErrorResponse.from_dict(response.json())
+
+        return response_502
 
     if response.status_code == 503:
         response_503 = ErrorResponse.from_dict(response.json())
@@ -82,7 +97,7 @@ def sync_detailed(
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
     """Edit a message
 
-     Replaces the text of a message the account sent.
+     Replaces the text of a message the account sent. MAX allows it for 7 days (`edit-timeout`).
 
     Args:
         body (EditMessageBody):
@@ -113,7 +128,7 @@ def sync(
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
     """Edit a message
 
-     Replaces the text of a message the account sent.
+     Replaces the text of a message the account sent. MAX allows it for 7 days (`edit-timeout`).
 
     Args:
         body (EditMessageBody):
@@ -139,7 +154,7 @@ async def asyncio_detailed(
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
     """Edit a message
 
-     Replaces the text of a message the account sent.
+     Replaces the text of a message the account sent. MAX allows it for 7 days (`edit-timeout`).
 
     Args:
         body (EditMessageBody):
@@ -168,7 +183,7 @@ async def asyncio(
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
     """Edit a message
 
-     Replaces the text of a message the account sent.
+     Replaces the text of a message the account sent. MAX allows it for 7 days (`edit-timeout`).
 
     Args:
         body (EditMessageBody):

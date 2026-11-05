@@ -81,7 +81,8 @@ def sync_detailed(
     live session's, or the one stored at the last login), for every gateway
     account logged into it; `maxUserID` names the MAX account. An account
     that is not paused, or whose MAX account is unknown, answers the same.
-    The body is optional. No MAX call.
+    Every gateway account of the MAX account subscribed to `Resumed` (or
+    `All`) gets that event. The body is optional. No MAX call.
 
     Args:
         body (ResumeBody): Optional; no body and `{}` work too.
@@ -116,7 +117,8 @@ def sync(
     live session's, or the one stored at the last login), for every gateway
     account logged into it; `maxUserID` names the MAX account. An account
     that is not paused, or whose MAX account is unknown, answers the same.
-    The body is optional. No MAX call.
+    Every gateway account of the MAX account subscribed to `Resumed` (or
+    `All`) gets that event. The body is optional. No MAX call.
 
     Args:
         body (ResumeBody): Optional; no body and `{}` work too.
@@ -146,7 +148,8 @@ async def asyncio_detailed(
     live session's, or the one stored at the last login), for every gateway
     account logged into it; `maxUserID` names the MAX account. An account
     that is not paused, or whose MAX account is unknown, answers the same.
-    The body is optional. No MAX call.
+    Every gateway account of the MAX account subscribed to `Resumed` (or
+    `All`) gets that event. The body is optional. No MAX call.
 
     Args:
         body (ResumeBody): Optional; no body and `{}` work too.
@@ -179,7 +182,8 @@ async def asyncio(
     live session's, or the one stored at the last login), for every gateway
     account logged into it; `maxUserID` names the MAX account. An account
     that is not paused, or whose MAX account is unknown, answers the same.
-    The body is optional. No MAX call.
+    Every gateway account of the MAX account subscribed to `Resumed` (or
+    `All`) gets that event. The body is optional. No MAX call.
 
     Args:
         body (ResumeBody): Optional; no body and `{}` work too.

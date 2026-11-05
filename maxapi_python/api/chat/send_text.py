@@ -48,6 +48,11 @@ def _parse_response(
 
         return response_401
 
+    if response.status_code == 403:
+        response_403 = ErrorResponse.from_dict(response.json())
+
+        return response_403
+
     if response.status_code == 404:
         response_404 = ErrorResponse.from_dict(response.json())
 
@@ -90,25 +95,34 @@ def sync_detailed(
     client: AuthenticatedClient,
     body: SendTextBody,
 ) -> Response[Union[ErrorResponse, SendTextResponse]]:
-    """Send a text message
+    """Send a message
 
-     Sends a text from the account to a chat, or to a person by phone. Every
-    error carries a delivery outcome `code`: only `send_failed` (500) means
-    the message may have arrived; every other error means nothing was sent.
-    The checks run in this order: session, body, target, pause, lookup
-    (cache, then MAX), send. Answers within ~9.5 s (lookup at most 4 s, the
-    send's acknowledgement at most 5 s).
+     Sends a text, with up to 12 photos uploaded by `POST /media/photo`, to a
+    chat (a dialog, a group chat, a channel the account may post in) or to a
+    person by phone. Every error carries a delivery outcome `code`: only
+    `send_failed` (500) means the message may have arrived; every other
+    error means nothing was sent. The checks run in this order: session,
+    body, target, message, pause, lookup (cache, then MAX), send.
+    Answers within ~9.5 s: the phone lookup waits at most 4 s for MAX, the
+    send at most 5 s, each database call at most 200 ms.
 
-    A phone lookup's answer is cached per account: a found contact for 90
-    days, MAX's `not.found` for 30 days. A MAX error on the lookup or the
-    send whose code contains `restricted`, `limit`, `too.many`, `flood` or
-    `spam` pauses the MAX account (`paused`, `pauseReason`); while paused
-    every send of every gateway account of it answers 422 `send_rejected`
-    without a MAX call, until `POST /session/resume`.
+    The gateway does not pace sends: each send goes to MAX at once, and
+    sends of one account may run at the same time. How fast an account
+    sends is the job of the project that uses the gateway.
+
+    A MAX error on the lookup or the send whose code marks a limit or
+    restriction (`restricted`, `too.many`, `flood`, `spam`, or `limit` other
+    than a size or length limit) pauses the MAX account (`paused`,
+    `pauseReason`) and sends `Paused`; while paused every send of every
+    gateway account of it answers 422 `send_rejected` without a MAX call,
+    until `POST /session/resume`.
+
+    With a `ref`, a send answered `send_failed` is confirmed later by the
+    `MessageOutcome` event.
 
     Args:
-        body (SendTextBody): One of `chatId` and `phone` is required; with both, `chatId` wins.
-            Unknown fields are ignored.
+        body (SendTextBody): One of `chatId` and `phone` is required; with both, `chatId` wins. A
+            message needs a text or an attachment. Unknown fields are ignored.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -134,25 +148,34 @@ def sync(
     client: AuthenticatedClient,
     body: SendTextBody,
 ) -> Optional[Union[ErrorResponse, SendTextResponse]]:
-    """Send a text message
+    """Send a message
 
-     Sends a text from the account to a chat, or to a person by phone. Every
-    error carries a delivery outcome `code`: only `send_failed` (500) means
-    the message may have arrived; every other error means nothing was sent.
-    The checks run in this order: session, body, target, pause, lookup
-    (cache, then MAX), send. Answers within ~9.5 s (lookup at most 4 s, the
-    send's acknowledgement at most 5 s).
+     Sends a text, with up to 12 photos uploaded by `POST /media/photo`, to a
+    chat (a dialog, a group chat, a channel the account may post in) or to a
+    person by phone. Every error carries a delivery outcome `code`: only
+    `send_failed` (500) means the message may have arrived; every other
+    error means nothing was sent. The checks run in this order: session,
+    body, target, message, pause, lookup (cache, then MAX), send.
+    Answers within ~9.5 s: the phone lookup waits at most 4 s for MAX, the
+    send at most 5 s, each database call at most 200 ms.
 
-    A phone lookup's answer is cached per account: a found contact for 90
-    days, MAX's `not.found` for 30 days. A MAX error on the lookup or the
-    send whose code contains `restricted`, `limit`, `too.many`, `flood` or
-    `spam` pauses the MAX account (`paused`, `pauseReason`); while paused
-    every send of every gateway account of it answers 422 `send_rejected`
-    without a MAX call, until `POST /session/resume`.
+    The gateway does not pace sends: each send goes to MAX at once, and
+    sends of one account may run at the same time. How fast an account
+    sends is the job of the project that uses the gateway.
+
+    A MAX error on the lookup or the send whose code marks a limit or
+    restriction (`restricted`, `too.many`, `flood`, `spam`, or `limit` other
+    than a size or length limit) pauses the MAX account (`paused`,
+    `pauseReason`) and sends `Paused`; while paused every send of every
+    gateway account of it answers 422 `send_rejected` without a MAX call,
+    until `POST /session/resume`.
+
+    With a `ref`, a send answered `send_failed` is confirmed later by the
+    `MessageOutcome` event.
 
     Args:
-        body (SendTextBody): One of `chatId` and `phone` is required; with both, `chatId` wins.
-            Unknown fields are ignored.
+        body (SendTextBody): One of `chatId` and `phone` is required; with both, `chatId` wins. A
+            message needs a text or an attachment. Unknown fields are ignored.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -173,25 +196,34 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     body: SendTextBody,
 ) -> Response[Union[ErrorResponse, SendTextResponse]]:
-    """Send a text message
+    """Send a message
 
-     Sends a text from the account to a chat, or to a person by phone. Every
-    error carries a delivery outcome `code`: only `send_failed` (500) means
-    the message may have arrived; every other error means nothing was sent.
-    The checks run in this order: session, body, target, pause, lookup
-    (cache, then MAX), send. Answers within ~9.5 s (lookup at most 4 s, the
-    send's acknowledgement at most 5 s).
+     Sends a text, with up to 12 photos uploaded by `POST /media/photo`, to a
+    chat (a dialog, a group chat, a channel the account may post in) or to a
+    person by phone. Every error carries a delivery outcome `code`: only
+    `send_failed` (500) means the message may have arrived; every other
+    error means nothing was sent. The checks run in this order: session,
+    body, target, message, pause, lookup (cache, then MAX), send.
+    Answers within ~9.5 s: the phone lookup waits at most 4 s for MAX, the
+    send at most 5 s, each database call at most 200 ms.
 
-    A phone lookup's answer is cached per account: a found contact for 90
-    days, MAX's `not.found` for 30 days. A MAX error on the lookup or the
-    send whose code contains `restricted`, `limit`, `too.many`, `flood` or
-    `spam` pauses the MAX account (`paused`, `pauseReason`); while paused
-    every send of every gateway account of it answers 422 `send_rejected`
-    without a MAX call, until `POST /session/resume`.
+    The gateway does not pace sends: each send goes to MAX at once, and
+    sends of one account may run at the same time. How fast an account
+    sends is the job of the project that uses the gateway.
+
+    A MAX error on the lookup or the send whose code marks a limit or
+    restriction (`restricted`, `too.many`, `flood`, `spam`, or `limit` other
+    than a size or length limit) pauses the MAX account (`paused`,
+    `pauseReason`) and sends `Paused`; while paused every send of every
+    gateway account of it answers 422 `send_rejected` without a MAX call,
+    until `POST /session/resume`.
+
+    With a `ref`, a send answered `send_failed` is confirmed later by the
+    `MessageOutcome` event.
 
     Args:
-        body (SendTextBody): One of `chatId` and `phone` is required; with both, `chatId` wins.
-            Unknown fields are ignored.
+        body (SendTextBody): One of `chatId` and `phone` is required; with both, `chatId` wins. A
+            message needs a text or an attachment. Unknown fields are ignored.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -215,25 +247,34 @@ async def asyncio(
     client: AuthenticatedClient,
     body: SendTextBody,
 ) -> Optional[Union[ErrorResponse, SendTextResponse]]:
-    """Send a text message
+    """Send a message
 
-     Sends a text from the account to a chat, or to a person by phone. Every
-    error carries a delivery outcome `code`: only `send_failed` (500) means
-    the message may have arrived; every other error means nothing was sent.
-    The checks run in this order: session, body, target, pause, lookup
-    (cache, then MAX), send. Answers within ~9.5 s (lookup at most 4 s, the
-    send's acknowledgement at most 5 s).
+     Sends a text, with up to 12 photos uploaded by `POST /media/photo`, to a
+    chat (a dialog, a group chat, a channel the account may post in) or to a
+    person by phone. Every error carries a delivery outcome `code`: only
+    `send_failed` (500) means the message may have arrived; every other
+    error means nothing was sent. The checks run in this order: session,
+    body, target, message, pause, lookup (cache, then MAX), send.
+    Answers within ~9.5 s: the phone lookup waits at most 4 s for MAX, the
+    send at most 5 s, each database call at most 200 ms.
 
-    A phone lookup's answer is cached per account: a found contact for 90
-    days, MAX's `not.found` for 30 days. A MAX error on the lookup or the
-    send whose code contains `restricted`, `limit`, `too.many`, `flood` or
-    `spam` pauses the MAX account (`paused`, `pauseReason`); while paused
-    every send of every gateway account of it answers 422 `send_rejected`
-    without a MAX call, until `POST /session/resume`.
+    The gateway does not pace sends: each send goes to MAX at once, and
+    sends of one account may run at the same time. How fast an account
+    sends is the job of the project that uses the gateway.
+
+    A MAX error on the lookup or the send whose code marks a limit or
+    restriction (`restricted`, `too.many`, `flood`, `spam`, or `limit` other
+    than a size or length limit) pauses the MAX account (`paused`,
+    `pauseReason`) and sends `Paused`; while paused every send of every
+    gateway account of it answers 422 `send_rejected` without a MAX call,
+    until `POST /session/resume`.
+
+    With a `ref`, a send answered `send_failed` is confirmed later by the
+    `MessageOutcome` event.
 
     Args:
-        body (SendTextBody): One of `chatId` and `phone` is required; with both, `chatId` wins.
-            Unknown fields are ignored.
+        body (SendTextBody): One of `chatId` and `phone` is required; with both, `chatId` wins. A
+            message needs a text or an attachment. Unknown fields are ignored.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

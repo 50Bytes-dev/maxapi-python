@@ -1,37 +1,47 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar, cast
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-T = TypeVar("T", bound="SyncResponse")
+if TYPE_CHECKING:
+    from ..models.chat_row import ChatRow
+
+
+T = TypeVar("T", bound="ChatInfoResponse")
 
 
 @_attrs_define
-class SyncResponse:
-    """`success`, `maxUserID` and every field of MAX's login answer (`profile`, `chats`, `contacts`, ...), as MAX sends
-    them.
-
-        Attributes:
-            success (bool):  Example: True.
-            max_user_id (int):  Example: 123456789.
+class ChatInfoResponse:
+    """
+    Attributes:
+        success (bool):  Example: True.
+        items (list['ChatRow']):
+        missing (list[int]): The ids asked for that MAX does not show the account
     """
 
     success: bool
-    max_user_id: int
+    items: list["ChatRow"]
+    missing: list[int]
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         success = self.success
 
-        max_user_id = self.max_user_id
+        items = []
+        for items_item_data in self.items:
+            items_item = items_item_data.to_dict()
+            items.append(items_item)
+
+        missing = self.missing
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "success": success,
-                "maxUserID": max_user_id,
+                "items": items,
+                "missing": missing,
             }
         )
 
@@ -39,18 +49,28 @@ class SyncResponse:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.chat_row import ChatRow
+
         d = dict(src_dict)
         success = d.pop("success")
 
-        max_user_id = d.pop("maxUserID")
+        items = []
+        _items = d.pop("items")
+        for items_item_data in _items:
+            items_item = ChatRow.from_dict(items_item_data)
 
-        sync_response = cls(
+            items.append(items_item)
+
+        missing = cast(list[int], d.pop("missing"))
+
+        chat_info_response = cls(
             success=success,
-            max_user_id=max_user_id,
+            items=items,
+            missing=missing,
         )
 
-        sync_response.additional_properties = d
-        return sync_response
+        chat_info_response.additional_properties = d
+        return chat_info_response
 
     @property
     def additional_keys(self) -> list[str]:

@@ -48,6 +48,11 @@ def _parse_response(
 
         return response_401
 
+    if response.status_code == 422:
+        response_422 = ErrorResponse.from_dict(response.json())
+
+        return response_422
+
     if response.status_code == 500:
         response_500 = ErrorResponse.from_dict(response.json())
 
@@ -77,8 +82,10 @@ def sync_detailed(
 ) -> Response[Union[DownloadMediaResponse, ErrorResponse]]:
     """Download a file by URL
 
-     The gateway fetches `url` itself (30 s timeout, any host) and returns
-    the bytes in base64. Needs no MAX session.
+     The gateway fetches `url` itself through its SSRF guard (http and https
+    only, no internal address, at most `MAXAPI_MEDIA_MAX_BYTES`, 60 s) and
+    returns the bytes in base64. Meant for the `baseUrl` of a photo of a
+    `Message`. Makes no MAX call and needs no MAX session.
 
     Args:
         body (DownloadUrlBody):
@@ -109,8 +116,10 @@ def sync(
 ) -> Optional[Union[DownloadMediaResponse, ErrorResponse]]:
     """Download a file by URL
 
-     The gateway fetches `url` itself (30 s timeout, any host) and returns
-    the bytes in base64. Needs no MAX session.
+     The gateway fetches `url` itself through its SSRF guard (http and https
+    only, no internal address, at most `MAXAPI_MEDIA_MAX_BYTES`, 60 s) and
+    returns the bytes in base64. Meant for the `baseUrl` of a photo of a
+    `Message`. Makes no MAX call and needs no MAX session.
 
     Args:
         body (DownloadUrlBody):
@@ -136,8 +145,10 @@ async def asyncio_detailed(
 ) -> Response[Union[DownloadMediaResponse, ErrorResponse]]:
     """Download a file by URL
 
-     The gateway fetches `url` itself (30 s timeout, any host) and returns
-    the bytes in base64. Needs no MAX session.
+     The gateway fetches `url` itself through its SSRF guard (http and https
+    only, no internal address, at most `MAXAPI_MEDIA_MAX_BYTES`, 60 s) and
+    returns the bytes in base64. Meant for the `baseUrl` of a photo of a
+    `Message`. Makes no MAX call and needs no MAX session.
 
     Args:
         body (DownloadUrlBody):
@@ -166,8 +177,10 @@ async def asyncio(
 ) -> Optional[Union[DownloadMediaResponse, ErrorResponse]]:
     """Download a file by URL
 
-     The gateway fetches `url` itself (30 s timeout, any host) and returns
-    the bytes in base64. Needs no MAX session.
+     The gateway fetches `url` itself through its SSRF guard (http and https
+    only, no internal address, at most `MAXAPI_MEDIA_MAX_BYTES`, 60 s) and
+    returns the bytes in base64. Meant for the `baseUrl` of a photo of a
+    `Message`. Makes no MAX call and needs no MAX session.
 
     Args:
         body (DownloadUrlBody):

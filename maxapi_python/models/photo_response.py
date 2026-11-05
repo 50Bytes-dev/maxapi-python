@@ -4,32 +4,43 @@ from typing import Any, TypeVar
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
-T = TypeVar("T", bound="SendMediaResponse")
+T = TypeVar("T", bound="PhotoResponse")
 
 
 @_attrs_define
-class SendMediaResponse:
+class PhotoResponse:
     """
     Attributes:
         success (bool):  Example: True.
-        message_id (str): MAX's id of the new message, as a string Example: 115478893120847321.
+        attachment (str): MAX's token of the photo; `attachments` of `POST /chat/send/text` takes it, for any chat of
+            the account
+        width (int):  Example: 1080.
+        height (int):  Example: 1440.
     """
 
     success: bool
-    message_id: str
+    attachment: str
+    width: int
+    height: int
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         success = self.success
 
-        message_id = self.message_id
+        attachment = self.attachment
+
+        width = self.width
+
+        height = self.height
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
                 "success": success,
-                "messageId": message_id,
+                "attachment": attachment,
+                "width": width,
+                "height": height,
             }
         )
 
@@ -40,15 +51,21 @@ class SendMediaResponse:
         d = dict(src_dict)
         success = d.pop("success")
 
-        message_id = d.pop("messageId")
+        attachment = d.pop("attachment")
 
-        send_media_response = cls(
+        width = d.pop("width")
+
+        height = d.pop("height")
+
+        photo_response = cls(
             success=success,
-            message_id=message_id,
+            attachment=attachment,
+            width=width,
+            height=height,
         )
 
-        send_media_response.additional_properties = d
-        return send_media_response
+        photo_response.additional_properties = d
+        return photo_response
 
     @property
     def additional_keys(self) -> list[str]:

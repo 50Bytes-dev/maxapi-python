@@ -7,7 +7,7 @@ from ... import errors
 from ...client import AuthenticatedClient, Client
 from ...models.error_response import ErrorResponse
 from ...models.send_audio_body import SendAudioBody
-from ...models.send_media_response import SendMediaResponse
+from ...models.send_text_response import SendTextResponse
 from ...types import Response
 
 
@@ -32,9 +32,9 @@ def _get_kwargs(
 
 def _parse_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Optional[Union[ErrorResponse, SendMediaResponse]]:
+) -> Optional[Union[ErrorResponse, SendTextResponse]]:
     if response.status_code == 200:
-        response_200 = SendMediaResponse.from_dict(response.json())
+        response_200 = SendTextResponse.from_dict(response.json())
 
         return response_200
 
@@ -47,6 +47,21 @@ def _parse_response(
         response_401 = ErrorResponse.from_dict(response.json())
 
         return response_401
+
+    if response.status_code == 403:
+        response_403 = ErrorResponse.from_dict(response.json())
+
+        return response_403
+
+    if response.status_code == 404:
+        response_404 = ErrorResponse.from_dict(response.json())
+
+        return response_404
+
+    if response.status_code == 422:
+        response_422 = ErrorResponse.from_dict(response.json())
+
+        return response_422
 
     if response.status_code == 500:
         response_500 = ErrorResponse.from_dict(response.json())
@@ -66,7 +81,7 @@ def _parse_response(
 
 def _build_response(
     *, client: Union[AuthenticatedClient, Client], response: httpx.Response
-) -> Response[Union[ErrorResponse, SendMediaResponse]]:
+) -> Response[Union[ErrorResponse, SendTextResponse]]:
     return Response(
         status_code=HTTPStatus(response.status_code),
         content=response.content,
@@ -79,12 +94,18 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     body: SendAudioBody,
-) -> Response[Union[ErrorResponse, SendMediaResponse]]:
+) -> Response[Union[ErrorResponse, SendTextResponse]]:
     """Send an audio file
 
-     Uploads an audio file to MAX and sends it as a file. Errors carry no
-    `code`; a 500 leaves the outcome unknown. The pause and the lookup cache
-    of `POST /chat/send/text` do not apply here.
+     Sends an audio file, sent as a file: the media is fetched or decoded (a URL goes through the
+    SSRF guard, at most `MAXAPI_MEDIA_MAX_BYTES`), uploaded to MAX, then
+    sent with the rules and codes of `POST /chat/send/text`: the pause, the
+    phone lookup through the cache, `ref`. The checks run in this order:
+    session, body, target, caption, pause, media, upload, lookup, send.
+    MAX refusing the upload, or the upload failing, answers 422
+    `attachment_rejected`. The upload takes up to ~90 s for a document
+    or audio and ~270 s for a video (the upload address, the upload, MAX's
+    processing) on top of the send's ~9.5 s.
 
     Args:
         body (SendAudioBody):
@@ -94,7 +115,7 @@ def sync_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResponse, SendMediaResponse]]
+        Response[Union[ErrorResponse, SendTextResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -112,12 +133,18 @@ def sync(
     *,
     client: AuthenticatedClient,
     body: SendAudioBody,
-) -> Optional[Union[ErrorResponse, SendMediaResponse]]:
+) -> Optional[Union[ErrorResponse, SendTextResponse]]:
     """Send an audio file
 
-     Uploads an audio file to MAX and sends it as a file. Errors carry no
-    `code`; a 500 leaves the outcome unknown. The pause and the lookup cache
-    of `POST /chat/send/text` do not apply here.
+     Sends an audio file, sent as a file: the media is fetched or decoded (a URL goes through the
+    SSRF guard, at most `MAXAPI_MEDIA_MAX_BYTES`), uploaded to MAX, then
+    sent with the rules and codes of `POST /chat/send/text`: the pause, the
+    phone lookup through the cache, `ref`. The checks run in this order:
+    session, body, target, caption, pause, media, upload, lookup, send.
+    MAX refusing the upload, or the upload failing, answers 422
+    `attachment_rejected`. The upload takes up to ~90 s for a document
+    or audio and ~270 s for a video (the upload address, the upload, MAX's
+    processing) on top of the send's ~9.5 s.
 
     Args:
         body (SendAudioBody):
@@ -127,7 +154,7 @@ def sync(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResponse, SendMediaResponse]
+        Union[ErrorResponse, SendTextResponse]
     """
 
     return sync_detailed(
@@ -140,12 +167,18 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     body: SendAudioBody,
-) -> Response[Union[ErrorResponse, SendMediaResponse]]:
+) -> Response[Union[ErrorResponse, SendTextResponse]]:
     """Send an audio file
 
-     Uploads an audio file to MAX and sends it as a file. Errors carry no
-    `code`; a 500 leaves the outcome unknown. The pause and the lookup cache
-    of `POST /chat/send/text` do not apply here.
+     Sends an audio file, sent as a file: the media is fetched or decoded (a URL goes through the
+    SSRF guard, at most `MAXAPI_MEDIA_MAX_BYTES`), uploaded to MAX, then
+    sent with the rules and codes of `POST /chat/send/text`: the pause, the
+    phone lookup through the cache, `ref`. The checks run in this order:
+    session, body, target, caption, pause, media, upload, lookup, send.
+    MAX refusing the upload, or the upload failing, answers 422
+    `attachment_rejected`. The upload takes up to ~90 s for a document
+    or audio and ~270 s for a video (the upload address, the upload, MAX's
+    processing) on top of the send's ~9.5 s.
 
     Args:
         body (SendAudioBody):
@@ -155,7 +188,7 @@ async def asyncio_detailed(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Response[Union[ErrorResponse, SendMediaResponse]]
+        Response[Union[ErrorResponse, SendTextResponse]]
     """
 
     kwargs = _get_kwargs(
@@ -171,12 +204,18 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     body: SendAudioBody,
-) -> Optional[Union[ErrorResponse, SendMediaResponse]]:
+) -> Optional[Union[ErrorResponse, SendTextResponse]]:
     """Send an audio file
 
-     Uploads an audio file to MAX and sends it as a file. Errors carry no
-    `code`; a 500 leaves the outcome unknown. The pause and the lookup cache
-    of `POST /chat/send/text` do not apply here.
+     Sends an audio file, sent as a file: the media is fetched or decoded (a URL goes through the
+    SSRF guard, at most `MAXAPI_MEDIA_MAX_BYTES`), uploaded to MAX, then
+    sent with the rules and codes of `POST /chat/send/text`: the pause, the
+    phone lookup through the cache, `ref`. The checks run in this order:
+    session, body, target, caption, pause, media, upload, lookup, send.
+    MAX refusing the upload, or the upload failing, answers 422
+    `attachment_rejected`. The upload takes up to ~90 s for a document
+    or audio and ~270 s for a video (the upload address, the upload, MAX's
+    processing) on top of the send's ~9.5 s.
 
     Args:
         body (SendAudioBody):
@@ -186,7 +225,7 @@ async def asyncio(
         httpx.TimeoutException: If the request takes longer than Client.timeout.
 
     Returns:
-        Union[ErrorResponse, SendMediaResponse]
+        Union[ErrorResponse, SendTextResponse]
     """
 
     return (

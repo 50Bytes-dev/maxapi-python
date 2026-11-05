@@ -60,9 +60,10 @@ def sync_detailed(
 ) -> Response[Union[ErrorResponse, StatusResponse]]:
     """Get the account's MAX session
 
-     Reports the session, the stored login and the pause of the MAX account.
-    No MAX call. Read `paused` before `connected`: a paused account keeps
-    its session.
+     Reports the session, the stored login, the MAX account's name and photo
+    (the live session's, else the last login's) and the pause of the MAX
+    account. No MAX call. Read `paused` before `connected`: a paused account
+    keeps its session.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -87,9 +88,10 @@ def sync(
 ) -> Optional[Union[ErrorResponse, StatusResponse]]:
     """Get the account's MAX session
 
-     Reports the session, the stored login and the pause of the MAX account.
-    No MAX call. Read `paused` before `connected`: a paused account keeps
-    its session.
+     Reports the session, the stored login, the MAX account's name and photo
+    (the live session's, else the last login's) and the pause of the MAX
+    account. No MAX call. Read `paused` before `connected`: a paused account
+    keeps its session.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -110,9 +112,10 @@ async def asyncio_detailed(
 ) -> Response[Union[ErrorResponse, StatusResponse]]:
     """Get the account's MAX session
 
-     Reports the session, the stored login and the pause of the MAX account.
-    No MAX call. Read `paused` before `connected`: a paused account keeps
-    its session.
+     Reports the session, the stored login, the MAX account's name and photo
+    (the live session's, else the last login's) and the pause of the MAX
+    account. No MAX call. Read `paused` before `connected`: a paused account
+    keeps its session.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -135,9 +138,10 @@ async def asyncio(
 ) -> Optional[Union[ErrorResponse, StatusResponse]]:
     """Get the account's MAX session
 
-     Reports the session, the stored login and the pause of the MAX account.
-    No MAX call. Read `paused` before `connected`: a paused account keeps
-    its session.
+     Reports the session, the stored login, the MAX account's name and photo
+    (the live session's, else the last login's) and the pause of the MAX
+    account. No MAX call. Read `paused` before `connected`: a paused account
+    keeps its session.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

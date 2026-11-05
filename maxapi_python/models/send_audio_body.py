@@ -18,14 +18,19 @@ class SendAudioBody:
         audio (Union[Unset, str]): A data URL, an http(s) URL the gateway downloads, or plain base64 Example:
             data:audio/mpeg;base64,SUQz....
         file_name (Union[Unset, str]): Default `audio.mp3` Example: audio.mp3.
-        notify (Union[Unset, bool]):  Example: True.
+        notify (Union[Unset, bool]): Whether MAX notifies the recipients; true when left out Default: True. Example:
+            True.
+        ref (Union[Unset, str]): The caller's own id of the message, at most 128 bytes. The message's
+            cid is made from it, the same for every send with this ref, and a
+            `send_failed` with it is confirmed by `MessageOutcome`. Example: post-42-chat-7.
     """
 
     chat_id: Union[Unset, int] = UNSET
     phone: Union[Unset, str] = UNSET
     audio: Union[Unset, str] = UNSET
     file_name: Union[Unset, str] = UNSET
-    notify: Union[Unset, bool] = UNSET
+    notify: Union[Unset, bool] = True
+    ref: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -38,6 +43,8 @@ class SendAudioBody:
         file_name = self.file_name
 
         notify = self.notify
+
+        ref = self.ref
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -52,6 +59,8 @@ class SendAudioBody:
             field_dict["fileName"] = file_name
         if notify is not UNSET:
             field_dict["notify"] = notify
+        if ref is not UNSET:
+            field_dict["ref"] = ref
 
         return field_dict
 
@@ -68,12 +77,15 @@ class SendAudioBody:
 
         notify = d.pop("notify", UNSET)
 
+        ref = d.pop("ref", UNSET)
+
         send_audio_body = cls(
             chat_id=chat_id,
             phone=phone,
             audio=audio,
             file_name=file_name,
             notify=notify,
+            ref=ref,
         )
 
         send_audio_body.additional_properties = d

@@ -4,20 +4,28 @@ from typing import Any, Literal, TypeVar, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..models.auth_expired_event_reason import AuthExpiredEventReason
+
 T = TypeVar("T", bound="AuthExpiredEvent")
 
 
 @_attrs_define
 class AuthExpiredEvent:
-    """The session stopped and will not reconnect by itself: MAX refused the
-    stored login with an auth error (the login is erased; a new QR login is
-    needed), or refused the login 3 times in a row (the login is kept;
-    `POST /session/connect` tries again).
+    """The session stopped and will not reconnect by itself. `reason` says
+    whether the stored login is gone (`token_revoked`, `page_blocked`,
+    `logged_out`: a new QR login through `POST /session/connect` is needed)
+    or kept (`refresh_failed`: `POST /session/connect` tries it again). The
+    gateway account stays in every case. MAX's own text goes to the log
+    only.
 
         Attributes:
             type_ (Literal['AuthExpired']):
-            reason (str): The error text of an auth error; for refusals MAX's error code, "login timed out" or "login
-                connection lost" Example: login timed out.
+            reason (AuthExpiredEventReason): `token_revoked`: MAX refused the stored login (login.token and the
+                like, or the account is gone); the login is erased.
+                `page_blocked`: MAX blocked the account (login.blocked); the login is
+                erased. `refresh_failed`: MAX refused 3 logins in a row, or answered
+                login.flood; the login is kept. `logged_out`: MAX ended the session
+                (from the MAX app, or MAX itself); the login is erased. Example: refresh_failed.
             user_id (str): The account id (`userID` and `instanceID` are the same) Example:
                 6f1c2d4e-8b3e-4035-ba87-3f96a0e3f5c0.
             instance_id (str): The account id (`userID` and `instanceID` are the same) Example:
@@ -27,7 +35,7 @@ class AuthExpiredEvent:
     """
 
     type_: Literal["AuthExpired"]
-    reason: str
+    reason: AuthExpiredEventReason
     user_id: str
     instance_id: str
     instance_name: str
@@ -37,7 +45,7 @@ class AuthExpiredEvent:
     def to_dict(self) -> dict[str, Any]:
         type_ = self.type_
 
-        reason = self.reason
+        reason = self.reason.value
 
         user_id = self.user_id
 
@@ -69,7 +77,7 @@ class AuthExpiredEvent:
         if type_ != "AuthExpired":
             raise ValueError(f"type must match const 'AuthExpired', got '{type_}'")
 
-        reason = d.pop("reason")
+        reason = AuthExpiredEventReason(d.pop("reason"))
 
         user_id = d.pop("userID")
 

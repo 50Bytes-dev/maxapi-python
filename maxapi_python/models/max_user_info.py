@@ -4,6 +4,8 @@ from typing import TYPE_CHECKING, Any, TypeVar, Union, cast
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
 
+from ..types import UNSET, Unset
+
 if TYPE_CHECKING:
     from ..models.max_name import MaxName
 
@@ -29,6 +31,8 @@ class MaxUserInfo:
         update_time (int):
         web_app (str):
         avatar_url (str): `baseRawUrl`, else `baseUrl`; "" when neither
+        name (Union[Unset, str]): The name MAX shows for the user Example: Иван Петров.
+        phone (Union[Unset, int]): The user's phone, only when MAX shows it to the account Example: 79001234567.
     """
 
     id: int
@@ -44,6 +48,8 @@ class MaxUserInfo:
     update_time: int
     web_app: str
     avatar_url: str
+    name: Union[Unset, str] = UNSET
+    phone: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -86,6 +92,10 @@ class MaxUserInfo:
 
         avatar_url = self.avatar_url
 
+        name = self.name
+
+        phone = self.phone
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -105,6 +115,10 @@ class MaxUserInfo:
                 "avatarUrl": avatar_url,
             }
         )
+        if name is not UNSET:
+            field_dict["name"] = name
+        if phone is not UNSET:
+            field_dict["phone"] = phone
 
         return field_dict
 
@@ -170,6 +184,10 @@ class MaxUserInfo:
 
         avatar_url = d.pop("avatarUrl")
 
+        name = d.pop("name", UNSET)
+
+        phone = d.pop("phone", UNSET)
+
         max_user_info = cls(
             id=id,
             account_status=account_status,
@@ -184,6 +202,8 @@ class MaxUserInfo:
             update_time=update_time,
             web_app=web_app,
             avatar_url=avatar_url,
+            name=name,
+            phone=phone,
         )
 
         max_user_info.additional_properties = d

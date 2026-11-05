@@ -14,12 +14,13 @@ class DownloadDocumentBody:
     """
     Attributes:
         chat_id (Union[Unset, int]):  Example: 123456789.
-        message_id (Union[Unset, int]):  Example: 115478893120847321.
+        message_id (Union[Unset, str]): A MAX message id. MAX's ids are above 2^53, so they travel as strings; a JSON
+            number is read too. Example: 115478893120847321.
         file_id (Union[Unset, int]): The attachment's `fileId` Example: 111222333.
     """
 
     chat_id: Union[Unset, int] = UNSET
-    message_id: Union[Unset, int] = UNSET
+    message_id: Union[Unset, str] = UNSET
     file_id: Union[Unset, int] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 

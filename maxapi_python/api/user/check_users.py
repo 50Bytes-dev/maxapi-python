@@ -48,6 +48,11 @@ def _parse_response(
 
         return response_401
 
+    if response.status_code == 409:
+        response_409 = ErrorResponse.from_dict(response.json())
+
+        return response_409
+
     if response.status_code == 500:
         response_500 = ErrorResponse.from_dict(response.json())
 
@@ -82,9 +87,14 @@ def sync_detailed(
 ) -> Response[Union[CheckUsersResponse, ErrorResponse]]:
     """Look phone numbers up in MAX
 
-     Looks each number up in MAX, one by one, without the lookup cache of
-    `POST /chat/send/text` and without the pause. A number whose lookup
-    failed gets `exists` false plus `error`.
+     Tells for each number, at most 50, whether MAX has a user with it,
+    through the lookup cache of the sends: a number found within 90 days,
+    or refused with MAX's `not.found` within 30, makes no MAX call, and a
+    number looked up here is cached for the send that follows. The rest is
+    looked up in MAX one by one, each within 4 s. A number whose lookup
+    failed gets `exists` false plus `error` (and `upstreamCode` when MAX
+    answered). A stop signal on a lookup pauses the account and ends the
+    call with 409 `page_paused`; while paused no lookup is made.
 
     Args:
         body (CheckUsersBody):
@@ -115,9 +125,14 @@ def sync(
 ) -> Optional[Union[CheckUsersResponse, ErrorResponse]]:
     """Look phone numbers up in MAX
 
-     Looks each number up in MAX, one by one, without the lookup cache of
-    `POST /chat/send/text` and without the pause. A number whose lookup
-    failed gets `exists` false plus `error`.
+     Tells for each number, at most 50, whether MAX has a user with it,
+    through the lookup cache of the sends: a number found within 90 days,
+    or refused with MAX's `not.found` within 30, makes no MAX call, and a
+    number looked up here is cached for the send that follows. The rest is
+    looked up in MAX one by one, each within 4 s. A number whose lookup
+    failed gets `exists` false plus `error` (and `upstreamCode` when MAX
+    answered). A stop signal on a lookup pauses the account and ends the
+    call with 409 `page_paused`; while paused no lookup is made.
 
     Args:
         body (CheckUsersBody):
@@ -143,9 +158,14 @@ async def asyncio_detailed(
 ) -> Response[Union[CheckUsersResponse, ErrorResponse]]:
     """Look phone numbers up in MAX
 
-     Looks each number up in MAX, one by one, without the lookup cache of
-    `POST /chat/send/text` and without the pause. A number whose lookup
-    failed gets `exists` false plus `error`.
+     Tells for each number, at most 50, whether MAX has a user with it,
+    through the lookup cache of the sends: a number found within 90 days,
+    or refused with MAX's `not.found` within 30, makes no MAX call, and a
+    number looked up here is cached for the send that follows. The rest is
+    looked up in MAX one by one, each within 4 s. A number whose lookup
+    failed gets `exists` false plus `error` (and `upstreamCode` when MAX
+    answered). A stop signal on a lookup pauses the account and ends the
+    call with 409 `page_paused`; while paused no lookup is made.
 
     Args:
         body (CheckUsersBody):
@@ -174,9 +194,14 @@ async def asyncio(
 ) -> Optional[Union[CheckUsersResponse, ErrorResponse]]:
     """Look phone numbers up in MAX
 
-     Looks each number up in MAX, one by one, without the lookup cache of
-    `POST /chat/send/text` and without the pause. A number whose lookup
-    failed gets `exists` false plus `error`.
+     Tells for each number, at most 50, whether MAX has a user with it,
+    through the lookup cache of the sends: a number found within 90 days,
+    or refused with MAX's `not.found` within 30, makes no MAX call, and a
+    number looked up here is cached for the send that follows. The rest is
+    looked up in MAX one by one, each within 4 s. A number whose lookup
+    failed gets `exists` false plus `error` (and `upstreamCode` when MAX
+    answered). A stop signal on a lookup pauses the account and ends the
+    call with 409 `page_paused`; while paused no lookup is made.
 
     Args:
         body (CheckUsersBody):

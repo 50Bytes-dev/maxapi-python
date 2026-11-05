@@ -12,9 +12,9 @@ T = TypeVar("T", bound="SyncEvent")
 @_attrs_define
 class SyncEvent:
     """The session is logged in: after a connect with a stored login, after
-    `QRAuthorized`, after a reconnect, or after `POST /session/sync`. It
-    also carries every field of MAX's login answer (`profile`, `chats`,
-    `contacts`, ...): the owner's chats.
+    `QRAuthorized`, after a reconnect. It carries the account, never MAX's
+    login answer: the chats are `GET /chat/list`, people `POST /user/info`,
+    the profile `GET /session/status`.
 
         Attributes:
             type_ (Literal['Sync']):
@@ -26,7 +26,8 @@ class SyncEvent:
                 6f1c2d4e-8b3e-4035-ba87-3f96a0e3f5c0.
             instance_name (str): The account name; "" when the gateway could not read it Example: Shop bot.
             event_timestamp (int): Unix time in seconds, set when the delivery starts; a retry keeps it Example: 1793001234.
-            manual (Union[Unset, bool]): Present (true) only after `POST /session/sync`
+            name (Union[Unset, str]): The MAX account's name Example: Магазин у дома.
+            photo (Union[Unset, str]): The MAX account's photo URL; "" when it has none
     """
 
     type_: Literal["Sync"]
@@ -36,7 +37,8 @@ class SyncEvent:
     instance_id: str
     instance_name: str
     event_timestamp: int
-    manual: Union[Unset, bool] = UNSET
+    name: Union[Unset, str] = UNSET
+    photo: Union[Unset, str] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -54,7 +56,9 @@ class SyncEvent:
 
         event_timestamp = self.event_timestamp
 
-        manual = self.manual
+        name = self.name
+
+        photo = self.photo
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -69,8 +73,10 @@ class SyncEvent:
                 "eventTimestamp": event_timestamp,
             }
         )
-        if manual is not UNSET:
-            field_dict["manual"] = manual
+        if name is not UNSET:
+            field_dict["name"] = name
+        if photo is not UNSET:
+            field_dict["photo"] = photo
 
         return field_dict
 
@@ -93,7 +99,9 @@ class SyncEvent:
 
         event_timestamp = d.pop("eventTimestamp")
 
-        manual = d.pop("manual", UNSET)
+        name = d.pop("name", UNSET)
+
+        photo = d.pop("photo", UNSET)
 
         sync_event = cls(
             type_=type_,
@@ -103,7 +111,8 @@ class SyncEvent:
             instance_id=instance_id,
             instance_name=instance_name,
             event_timestamp=event_timestamp,
-            manual=manual,
+            name=name,
+            photo=photo,
         )
 
         sync_event.additional_properties = d
