@@ -1,7 +1,7 @@
 # maxapi-python
 A client library for [maxapi](https://github.com/50Bytes-dev/maxapi), the MAX Messenger REST gateway.
-Generated from maxapi's OpenAPI schema (`static/api/spec.yml`); version 5.0.0 matches the schema of maxapi 2.0.0
-(what changed and how to move to it: maxapi's `API.md`, "What changed in 2.0.0").
+Generated from maxapi's OpenAPI schema (`static/api/spec.yml`); version 6.0.0 matches the schema of maxapi 3.0.0
+(what changed and how to move to it: maxapi's `API.md`, "What changed in 3.0.0").
 
 Requires Python 3.9 or newer.
 
@@ -92,6 +92,28 @@ EVENTS = {
 }
 event = EVENTS[body["type"]].from_dict(body)
 ```
+
+## QR login with a cloud password
+After the scan MAX may ask for the account's cloud password: the `QRPasswordRequired` event comes (with `hint`
+and the masked `email` when MAX gives them), and `get_qr` answers `409` with `code` `password_required`.
+Send the password with `submit_password`; `QRAuthorized` and `Sync` follow.
+
+```python
+from maxapi_python.api.session import get_qr, submit_password
+from maxapi_python.models import ErrorResponse, PasswordBody, PasswordResponse
+
+answer = submit_password.sync(client=account, body=PasswordBody(password=password_from_the_owner))
+if isinstance(answer, PasswordResponse):
+    pass  # wait for QRAuthorized and Sync
+elif isinstance(answer, ErrorResponse):
+    if answer.code == "invalid_password":
+        ...  # ask the owner again (the fifth refusal ends the login)
+    elif answer.code in ("login_expired", "login_failed", "login_unsupported"):
+        ...  # the login ended; connect again to show a new QR
+```
+
+A login that ended answers `410` on `get_qr` and `submit_password` with its reason; `QRExpired.reason` is the
+same code (`login_unsupported` names MAX's step in `step`).
 
 ## Customizing the HTTP client
 `timeout`, `verify_ssl`, `headers`, `cookies`, `follow_redirects` and `raise_on_unexpected_status` are

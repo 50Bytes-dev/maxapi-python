@@ -9,7 +9,7 @@ T = TypeVar("T", bound="QRScannedEvent")
 
 @_attrs_define
 class QRScannedEvent:
-    """The owner scanned the QR (once per login).
+    """The owner scanned the QR (once per QR); the gateway confirms the login.
 
     Attributes:
         type_ (Literal['QRScanned']):

@@ -58,9 +58,10 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
-    """Log out of MAX and delete the account
+    """Log out of MAX
 
-     Ends the MAX session (opcode 20) and erases the stored MAX login. The
+     Stops a running QR login, ends the MAX session (opcode 20) and erases
+    the stored MAX login. The
     gateway account stays, with its token, webhook and settings: a new
     login is a QR login through `POST /session/connect`. Deleting the
     account is `DELETE /admin/users/{userid}`. No webhook is sent.
@@ -86,9 +87,10 @@ def sync(
     *,
     client: AuthenticatedClient,
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
-    """Log out of MAX and delete the account
+    """Log out of MAX
 
-     Ends the MAX session (opcode 20) and erases the stored MAX login. The
+     Stops a running QR login, ends the MAX session (opcode 20) and erases
+    the stored MAX login. The
     gateway account stays, with its token, webhook and settings: a new
     login is a QR login through `POST /session/connect`. Deleting the
     account is `DELETE /admin/users/{userid}`. No webhook is sent.
@@ -110,9 +112,10 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
-    """Log out of MAX and delete the account
+    """Log out of MAX
 
-     Ends the MAX session (opcode 20) and erases the stored MAX login. The
+     Stops a running QR login, ends the MAX session (opcode 20) and erases
+    the stored MAX login. The
     gateway account stays, with its token, webhook and settings: a new
     login is a QR login through `POST /session/connect`. Deleting the
     account is `DELETE /admin/users/{userid}`. No webhook is sent.
@@ -136,9 +139,10 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
-    """Log out of MAX and delete the account
+    """Log out of MAX
 
-     Ends the MAX session (opcode 20) and erases the stored MAX login. The
+     Stops a running QR login, ends the MAX session (opcode 20) and erases
+    the stored MAX login. The
     gateway account stays, with its token, webhook and settings: a new
     login is a QR login through `POST /session/connect`. Deleting the
     account is `DELETE /admin/users/{userid}`. No webhook is sent.

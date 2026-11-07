@@ -63,8 +63,11 @@ def sync_detailed(
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
     """Delete an account
 
-     Stops the account's MAX session and deletes the account with its MAX
-    login and phone lookup cache. Succeeds for an unknown id too. No webhook
+     Stops the account's QR login and MAX session for good and deletes the
+    account with its MAX login and phone lookup cache: once the call
+    returns, the account's WebSockets to MAX are closed and nothing of it
+    (a ping, a poll, a reconnect) reaches MAX. Succeeds for an unknown id
+    too. No webhook
     is sent, and the session is not logged out in MAX (`POST /session/logout`
     does that). A pause of its MAX account stays. The account's token
     answers `401` from then on.
@@ -98,8 +101,11 @@ def sync(
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
     """Delete an account
 
-     Stops the account's MAX session and deletes the account with its MAX
-    login and phone lookup cache. Succeeds for an unknown id too. No webhook
+     Stops the account's QR login and MAX session for good and deletes the
+    account with its MAX login and phone lookup cache: once the call
+    returns, the account's WebSockets to MAX are closed and nothing of it
+    (a ping, a poll, a reconnect) reaches MAX. Succeeds for an unknown id
+    too. No webhook
     is sent, and the session is not logged out in MAX (`POST /session/logout`
     does that). A pause of its MAX account stays. The account's token
     answers `401` from then on.
@@ -128,8 +134,11 @@ async def asyncio_detailed(
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
     """Delete an account
 
-     Stops the account's MAX session and deletes the account with its MAX
-    login and phone lookup cache. Succeeds for an unknown id too. No webhook
+     Stops the account's QR login and MAX session for good and deletes the
+    account with its MAX login and phone lookup cache: once the call
+    returns, the account's WebSockets to MAX are closed and nothing of it
+    (a ping, a poll, a reconnect) reaches MAX. Succeeds for an unknown id
+    too. No webhook
     is sent, and the session is not logged out in MAX (`POST /session/logout`
     does that). A pause of its MAX account stays. The account's token
     answers `401` from then on.
@@ -161,8 +170,11 @@ async def asyncio(
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
     """Delete an account
 
-     Stops the account's MAX session and deletes the account with its MAX
-    login and phone lookup cache. Succeeds for an unknown id too. No webhook
+     Stops the account's QR login and MAX session for good and deletes the
+    account with its MAX login and phone lookup cache: once the call
+    returns, the account's WebSockets to MAX are closed and nothing of it
+    (a ping, a poll, a reconnect) reaches MAX. Succeeds for an unknown id
+    too. No webhook
     is sent, and the session is not logged out in MAX (`POST /session/logout`
     does that). A pause of its MAX account stays. The account's token
     answers `401` from then on.

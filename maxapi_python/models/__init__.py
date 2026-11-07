@@ -59,13 +59,17 @@ from .message_event import MessageEvent
 from .message_event_s3 import MessageEventS3
 from .message_outcome_event import MessageOutcomeEvent
 from .message_response import MessageResponse
+from .password_body import PasswordBody
+from .password_response import PasswordResponse
 from .paused_event import PausedEvent
 from .photo_body import PhotoBody
 from .photo_response import PhotoResponse
 from .presence_update_event import PresenceUpdateEvent
 from .qr_authorized_event import QRAuthorizedEvent
 from .qr_expired_event import QRExpiredEvent
+from .qr_expired_event_reason import QRExpiredEventReason
 from .qr_generated_event import QRGeneratedEvent
+from .qr_password_required_event import QRPasswordRequiredEvent
 from .qr_response import QRResponse
 from .qr_scanned_event import QRScannedEvent
 from .react_body import ReactBody
@@ -155,13 +159,17 @@ __all__ = (
     "MessageEventS3",
     "MessageOutcomeEvent",
     "MessageResponse",
+    "PasswordBody",
+    "PasswordResponse",
     "PausedEvent",
     "PhotoBody",
     "PhotoResponse",
     "PresenceUpdateEvent",
     "QRAuthorizedEvent",
     "QRExpiredEvent",
+    "QRExpiredEventReason",
     "QRGeneratedEvent",
+    "QRPasswordRequiredEvent",
     "QRResponse",
     "QRScannedEvent",
     "ReactBody",

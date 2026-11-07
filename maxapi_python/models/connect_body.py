@@ -17,7 +17,7 @@ class ConnectBody:
     Attributes:
         subscribe (Union[Unset, list[EventType]]): The event subscription; overwrites the stored one, also when already
             connected. Duplicates are kept once. Example: ['Sync', 'QRAuthorized', 'AuthExpired', 'LoggedOut',
-            'Disconnected', 'Reconnecting', 'QRGenerated', 'QRScanned', 'QRExpired'].
+            'Disconnected', 'Reconnecting', 'QRGenerated', 'QRScanned', 'QRPasswordRequired', 'QRExpired'].
         immediate (Union[Unset, bool]): false (default): with a stored login and no session, wait 5 s for the
             session and answer 500 "failed to connect" if it is not up. true:
             answer at once; the outcome arrives as `Sync` or `AuthExpired`. Example: True.

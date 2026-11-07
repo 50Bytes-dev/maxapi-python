@@ -1,8 +1,10 @@
 from collections.abc import Mapping
-from typing import Any, TypeVar
+from typing import Any, TypeVar, Union
 
 from attrs import define as _attrs_define
 from attrs import field as _attrs_field
+
+from ..types import UNSET, Unset
 
 T = TypeVar("T", bound="QRResponse")
 
@@ -12,18 +14,22 @@ class QRResponse:
     """
     Attributes:
         success (bool):  Example: True.
-        qrcode (str): A 256x256 PNG data URL of MAX's login link; "" between a scan and the login Example:
+        qrcode (str): A 256x256 PNG data URL of MAX's login link, the same as the latest `QRGenerated` Example:
             data:image/png;base64,iVBORw0KGgo....
+        scanned (Union[Unset, bool]): The owner scanned the current QR and the gateway confirms the login
     """
 
     success: bool
     qrcode: str
+    scanned: Union[Unset, bool] = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         success = self.success
 
         qrcode = self.qrcode
+
+        scanned = self.scanned
 
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
@@ -33,6 +39,8 @@ class QRResponse:
                 "qrcode": qrcode,
             }
         )
+        if scanned is not UNSET:
+            field_dict["scanned"] = scanned
 
         return field_dict
 
@@ -43,9 +51,12 @@ class QRResponse:
 
         qrcode = d.pop("qrcode")
 
+        scanned = d.pop("scanned", UNSET)
+
         qr_response = cls(
             success=success,
             qrcode=qrcode,
+            scanned=scanned,
         )
 
         qr_response.additional_properties = d

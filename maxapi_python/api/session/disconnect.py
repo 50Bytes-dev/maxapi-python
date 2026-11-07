@@ -60,10 +60,11 @@ def sync_detailed(
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
     """Disconnect the account
 
-     Cancels the running QR login, or closes the MAX session and stops its
-    reconnects. The stored MAX login stays: the next connect reuses it. The
-    session is not logged out in MAX, and no webhook is sent. No body is
-    read.
+     Stops the running QR login (no `QRExpired`; once the call returns,
+    nothing of the login reaches MAX), or closes the MAX session and stops
+    its reconnects. The stored MAX login stays: the next connect reuses it.
+    The session is not logged out in MAX, and no webhook is sent. No body
+    is read.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -88,10 +89,11 @@ def sync(
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
     """Disconnect the account
 
-     Cancels the running QR login, or closes the MAX session and stops its
-    reconnects. The stored MAX login stays: the next connect reuses it. The
-    session is not logged out in MAX, and no webhook is sent. No body is
-    read.
+     Stops the running QR login (no `QRExpired`; once the call returns,
+    nothing of the login reaches MAX), or closes the MAX session and stops
+    its reconnects. The stored MAX login stays: the next connect reuses it.
+    The session is not logged out in MAX, and no webhook is sent. No body
+    is read.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -112,10 +114,11 @@ async def asyncio_detailed(
 ) -> Response[Union[ErrorResponse, MessageResponse]]:
     """Disconnect the account
 
-     Cancels the running QR login, or closes the MAX session and stops its
-    reconnects. The stored MAX login stays: the next connect reuses it. The
-    session is not logged out in MAX, and no webhook is sent. No body is
-    read.
+     Stops the running QR login (no `QRExpired`; once the call returns,
+    nothing of the login reaches MAX), or closes the MAX session and stops
+    its reconnects. The stored MAX login stays: the next connect reuses it.
+    The session is not logged out in MAX, and no webhook is sent. No body
+    is read.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -138,10 +141,11 @@ async def asyncio(
 ) -> Optional[Union[ErrorResponse, MessageResponse]]:
     """Disconnect the account
 
-     Cancels the running QR login, or closes the MAX session and stops its
-    reconnects. The stored MAX login stays: the next connect reuses it. The
-    session is not logged out in MAX, and no webhook is sent. No body is
-    read.
+     Stops the running QR login (no `QRExpired`; once the call returns,
+    nothing of the login reaches MAX), or closes the MAX session and stops
+    its reconnects. The stored MAX login stays: the next connect reuses it.
+    The session is not logged out in MAX, and no webhook is sent. No body
+    is read.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.

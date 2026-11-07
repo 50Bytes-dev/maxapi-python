@@ -20,6 +20,7 @@ class EventType(str, Enum):
     QRAUTHORIZED = "QRAuthorized"
     QREXPIRED = "QRExpired"
     QRGENERATED = "QRGenerated"
+    QRPASSWORDREQUIRED = "QRPasswordRequired"
     QRSCANNED = "QRScanned"
     REACTIONCHANGE = "ReactionChange"
     READRECEIPT = "ReadReceipt"

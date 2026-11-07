@@ -25,7 +25,10 @@ class ErrorResponse:
                 `lookup_failed`, `send_rejected`, `message_rejected`,
                 `attachment_rejected`, `send_failed`. Other calls that reach MAX:
                 `page_paused`, `upstream_error`, `not_connected`. Media:
-                `invalid_image`, `fetch_failed`, `upload_failed`. Generic:
+                `invalid_image`, `fetch_failed`, `upload_failed`. QR login:
+                `login_unavailable`, `password_required`, `password_not_required`,
+                `already_logged_in`, `invalid_password`, `login_expired`,
+                `login_failed`, `login_unsupported`. Generic:
                 `INVALID_INPUT`, `INTERNAL_ERROR`, `NOT_FOUND`. Treat an unknown code
                 as a failure of the call. Example: send_rejected.
             upstream_code (Union[Unset, str]): MAX's own error code (`chat.denied`, `not.found`,

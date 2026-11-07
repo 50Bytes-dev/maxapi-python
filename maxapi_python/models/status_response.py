@@ -14,8 +14,8 @@ class StatusResponse:
     """
     Attributes:
         success (bool):  Example: True.
-        connected (bool): The account's MAX connection is up (the QR login's connection too). A paused account keeps its
-            session.
+        connected (bool): The account's MAX session is up. A running QR login is not a session (false). A paused account
+            keeps its session.
         authenticated (bool): A MAX login (auth token) is stored
         logged_in (bool): `connected` and `authenticated`
         max_user_id (int): The MAX id of the session's account; 0 while no logged-in session is up Example: 123456789.

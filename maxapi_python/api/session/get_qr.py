@@ -32,10 +32,15 @@ def _parse_response(
 
         return response_401
 
-    if response.status_code == 500:
-        response_500 = ErrorResponse.from_dict(response.json())
+    if response.status_code == 409:
+        response_409 = ErrorResponse.from_dict(response.json())
 
-        return response_500
+        return response_409
+
+    if response.status_code == 410:
+        response_410 = ErrorResponse.from_dict(response.json())
+
+        return response_410
 
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
@@ -61,9 +66,9 @@ def sync_detailed(
     """Get the QR of the running login
 
      The QR of the running QR login as a PNG data URL. The gateway issues a
-    new QR when MAX's expires (webhook `QRGenerated`), so poll it every few
-    seconds while it is shown. There is no `scanned` flag: the scan arrives
-    as `QRScanned`, the login as `QRAuthorized` and `Sync`.
+    new QR when MAX's expires (up to 10 times) or after it connected to MAX
+    again (webhook `QRGenerated`); the webhooks alone can drive the login
+    screen. No MAX call.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -89,9 +94,9 @@ def sync(
     """Get the QR of the running login
 
      The QR of the running QR login as a PNG data URL. The gateway issues a
-    new QR when MAX's expires (webhook `QRGenerated`), so poll it every few
-    seconds while it is shown. There is no `scanned` flag: the scan arrives
-    as `QRScanned`, the login as `QRAuthorized` and `Sync`.
+    new QR when MAX's expires (up to 10 times) or after it connected to MAX
+    again (webhook `QRGenerated`); the webhooks alone can drive the login
+    screen. No MAX call.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -113,9 +118,9 @@ async def asyncio_detailed(
     """Get the QR of the running login
 
      The QR of the running QR login as a PNG data URL. The gateway issues a
-    new QR when MAX's expires (webhook `QRGenerated`), so poll it every few
-    seconds while it is shown. There is no `scanned` flag: the scan arrives
-    as `QRScanned`, the login as `QRAuthorized` and `Sync`.
+    new QR when MAX's expires (up to 10 times) or after it connected to MAX
+    again (webhook `QRGenerated`); the webhooks alone can drive the login
+    screen. No MAX call.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -139,9 +144,9 @@ async def asyncio(
     """Get the QR of the running login
 
      The QR of the running QR login as a PNG data URL. The gateway issues a
-    new QR when MAX's expires (webhook `QRGenerated`), so poll it every few
-    seconds while it is shown. There is no `scanned` flag: the scan arrives
-    as `QRScanned`, the login as `QRAuthorized` and `Sync`.
+    new QR when MAX's expires (up to 10 times) or after it connected to MAX
+    again (webhook `QRGenerated`); the webhooks alone can drive the login
+    screen. No MAX call.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
