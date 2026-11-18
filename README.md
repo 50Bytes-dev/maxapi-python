@@ -1,7 +1,8 @@
 # maxapi-python
 A client library for [maxapi](https://github.com/50Bytes-dev/maxapi), the MAX Messenger REST gateway.
-Generated from maxapi's OpenAPI schema (`static/api/spec.yml`); version 6.0.0 matches the schema of maxapi 3.0.0
-(what changed and how to move to it: maxapi's `API.md`, "What changed in 3.0.0").
+Generated from maxapi's OpenAPI schema (`static/api/spec.yml`); version 6.0.1 matches the schema of maxapi 3.0.1
+(what changed and how to move to it: maxapi's `API.md`, "What changed in 3.0.1"). 6.0.1 changes nothing in the
+client: the gateway moved to MAX's binary protocol v10, its HTTP API is the one of 3.0.0.
 
 Requires Python 3.9 or newer.
 
